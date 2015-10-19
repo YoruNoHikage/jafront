@@ -1,0 +1,149 @@
+#content {
+    position: relative;
+    margin: auto;
+    background: #eee;
+}
+
+#action {
+    position: relative;
+    background: #fff;
+    width: inherit;
+    bottom: 0;
+    padding: 10px;
+}
+
+$section-color: #eee;
+$section-video-color: $black;
+
+ul.thumbnails {
+    width: 100%;
+    background: $section-video-color;
+    box-shadow: 0 -4px 10px darken($black, 10%) inset;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    text-align: center;
+    z-index: 10;
+
+    li {
+        display: inline-block;
+        overflow: visible;
+        width: 200px;
+        height: 150px;
+
+        a {
+            display: block;
+            width: 100%;
+            height: 100%;
+            padding: 10px;
+
+            &:hover {
+                color: inherit;
+                background: rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease-in 0s;
+            }
+        }
+    }
+}
+
+.section-video {
+    background: $section-video-color;
+    color: #555;
+
+    h1, h2, h3, h4, h5, h6 {
+        color: #eee;
+    }
+
+    article .video {
+        text-align: center;
+    }
+}
+
+.section-gallery {
+    ul {
+        text-align: center;
+    }
+
+    ul li {
+        margin: 10px;
+        display: inline-block;
+    }
+}
+
+// HOME
+
+.title {
+    background: #2c2c2c;
+
+    .logo {
+        width: 50%;
+        margin: auto;
+    }
+
+    h1 {
+        font-size: 3em;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        color: #555;
+        text-align: center;
+        border: none;
+    }
+}
+
+.shout-panel {
+
+    .column {
+        display: inline-block;
+        width: 49.8%;
+        padding: 20px;
+        vertical-align: top;
+        text-align: center;
+    }
+
+    h3 {
+        font-size: 2em;
+        padding-bottom: 20px;
+    }
+
+}
+
+.last-games {
+    .item {
+        display: inline-block;
+        vertical-align: middle;
+        img {
+          display: block;
+        }
+    }
+}
+
+.game-content, .game-header {
+    float: left;
+    width: 65%;
+    padding: .5em;
+}
+
+.informations {
+    float: right;
+    width: 35%;
+    padding: .5em;
+}
+
+.panel {
+    background: #fff;
+    padding: .5em;
+}
+
+@media (max-width: 480px) {
+    .game-content, .game-header {
+        float: none;
+        width: auto;
+    }
+
+    .informations {
+        float: none;
+        width: auto;
+    }
+}

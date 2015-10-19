@@ -1,0 +1,16 @@
+.default {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 50px auto;
+  width: 50%;
+  background: #fff;
+  padding: 10px;
+  z-index: 300;
+  border-radius: 3px;
+}
+
+:global(.ReactModal__Overlay) {
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 200;
+}

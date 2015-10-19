@@ -1,0 +1,30 @@
+.default {
+  position: relative;
+}
+
+.logButtons {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+  opacity: 0;
+  transition: .3s ease-in 0s;
+  width: 100%;
+}
+
+.absoluteContainer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
+.tableContainer {
+  display: table;
+  width: 100%;
+  height: 100%;
+}
+
+:global(#sidebar:hover) .logButtons {
+  opacity: 1;
+}

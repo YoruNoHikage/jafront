@@ -1,0 +1,26 @@
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
+import Navigation from '../components/Navigation';
+import HomePage from '../containers/HomePage';
+
+@connect()
+export default class App extends Component {
+  render() {
+    return (
+      <div>
+        <Navigation />
+        <div className="mobile-header">
+            <a href="#" onClick={() => {document.getElementById('sidebar').classList.toggle('active')}}><i className="fa fa-bars"></i></a>
+            <h1 className="logo">JeuxAmateurs</h1>
+            <a href="#"><i className="fa fa-arrow-up"></i></a>
+        </div>
+        <div role="main" id="content">
+          <section className="main-content">
+          {this.props.children}
+          </section>
+        </div>
+      </div>
+    );
+  }
+}

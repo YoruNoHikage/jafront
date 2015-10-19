@@ -1,0 +1,8 @@
+.default {
+  background: #eee;
+  padding: .5em;
+  border-radius: 3px;
+  text-align: center;
+  color: #888;
+  line-height: 2;
+}

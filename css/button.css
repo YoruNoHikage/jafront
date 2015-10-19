@@ -1,0 +1,71 @@
+.default {
+  border-radius: 3px;
+  background: none;
+  padding: .25rem .5rem;
+  border: .125rem solid #008fff;
+  line-height: 1.125rem;
+  transition: background .3s ease-out;
+  color: #008fff;
+  font-size: .875rem;
+}
+
+.default:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, .25);
+}
+
+.default:hover {
+  background: #008fff;
+  color: #fff;
+  box-shadow: none;
+}
+
+.default:active {
+  border: none;
+  padding: 0.375rem .625rem;
+  box-shadow: inset 0 0 0 20rem rgba(0, 0, 0, .125),
+              inset 0 3px 4px 0 rgba(0, 0, 0, .25),
+              0 0 1px rgba(0, 0, 0, .125);
+}
+
+.block {
+  display: block;
+  width: 100%;
+}
+
+.small {
+  font-size: .75rem;
+  padding: .125rem .25rem;
+}
+
+.small:active {
+  padding: .25rem .375rem;
+}
+
+.large {
+  padding: .625rem 1.25rem;
+  font-size: 1.25rem;
+}
+
+.large:active {
+  padding: .75rem 1.375rem;
+}
+
+.danger {
+  border-color: #FF7373;
+  color: #FF7373;
+}
+
+.danger:hover {
+  background: #FF7373;
+}
+
+.negative {
+  border-color: #fff;
+  color: #fff;
+}
+
+.negative:hover {
+  background-color: #fff;
+  color: #008fff;
+}

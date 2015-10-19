@@ -1,0 +1,31 @@
+.form-input {
+  display: block;
+  width: 100%;
+  padding: 0.375rem;
+  line-height: 1.5;
+  color: #555;
+  background-color: #FFF;
+  border: none;
+  border-bottom: 0.125rem solid #CCC;
+
+  &:invalid {
+    &:empty {
+      box-shadow: none;
+    }
+
+    border-color: #f00;
+  }
+
+  &:focus, &:active {
+    border-color: $blue;
+  }
+
+  &.inline {
+    display: inline;
+    width: auto;
+  }
+}
+
+.form-group {
+  margin-bottom: 0.625rem;
+}

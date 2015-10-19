@@ -1,0 +1,25 @@
+.default {
+  white-space: nowrap;
+}
+
+.default > .button {
+  display: inline-block;
+}
+
+.default > .button:not(:first-child):not(:last-child) {
+  border-radius: 0;
+}
+
+.default > .button + .button {
+  border-left: none;
+}
+
+.default > .button:first-child {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.default > .button:last-child {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}

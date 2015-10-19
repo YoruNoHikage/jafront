@@ -1,0 +1,163 @@
+$sidebar-width: 80px;
+$sidebar-width-hover: 300px;
+
+#sidebar,
+#sidebar ~ * {
+    transition: width 0.5s cubic-bezier(0,0,0.01,1.17), left 0.5s cubic-bezier(0,0,0.01,1.17);
+    transition-delay: 0s; // click, no delay
+}
+
+#sidebar ~ * {
+    left: 0;
+}
+
+#sidebar.active ~ * {
+    left: $sidebar-width-hover;
+    transition-delay: 0s;
+}
+
+@media (min-width: $screen-small) {
+    #sidebar,
+    #sidebar ~ *,
+    #sidebar.active ~ *,{
+        transition-delay: 0.5s; // hover, delay
+    }
+
+    #sidebar ~ *,
+    #sidebar.active ~ *{
+        left: $sidebar-width;
+        padding-right: 80px;
+    }
+
+    #sidebar:hover ~ *,
+    #sidebar.active:hover ~ * {
+        left: $sidebar-width-hover;
+        transition-delay: 0s;
+    }
+}
+
+.mobile-header {
+    position: relative;
+    display: table;
+    background: $blue;
+    height: 80px;
+    width: 100%;
+
+    a {
+        width: 80px;
+        vertical-align: middle;
+        text-align: center;
+        display: table-cell;
+        color: $black;
+    }
+
+    .logo {
+        display: table-cell;
+        vertical-align: middle;
+    }
+}
+
+#sidebar {
+    position: fixed;
+    width: $sidebar-width-hover;
+    height: 100%;
+    background: $blue;
+    color: #fff;
+    vertical-align: top;
+    left: - $sidebar-width-hover;
+    overflow-x: hidden;
+    z-index: 100;
+
+    &.active {
+        left: 0;
+    }
+
+    .user figure {
+        margin: 10px auto;
+        width: 100%;
+        text-align: center;
+        position: relative;
+
+        img {
+            background: darken($blue, 10%);
+            border-radius: 100%;
+            width: $sidebar-width - 10px;
+            height: $sidebar-width - 10px;
+            display: block;
+            margin: auto;
+        }
+
+        figcaption {
+            font-weight: 500;
+            padding-top: 5px;
+        }
+    }
+
+    ul {
+        list-style-type: none;
+        font-size: 2em;
+        font-weight: 300;
+        margin: 0;
+        padding: 0;
+
+        li, li a {
+            display: block;
+            width: 100%;
+            min-width: $sidebar-width-hover;
+            line-height: 60px;
+            text-align: left;
+            color: #fff;
+
+            &:hover {
+                /*background: $black;
+                color: $blue;*/
+
+                background: #fff;
+                color: $blue;
+            }
+        }
+    }
+
+    i {
+        height: 30px;
+        font-size: 30px;
+        display: inline-block;
+        width: $sidebar-width;
+        text-align: center;
+    }
+
+    ul li * {
+        vertical-align: middle;
+        text-decoration: none;
+    }
+}
+
+@media (min-width: $screen-small) {
+    .mobile-header {
+        display: none;
+    }
+
+    #sidebar {
+        width: $sidebar-width;
+        left: 0;
+
+        &:hover {
+            width: $sidebar-width-hover;
+            transition-delay: 0s;
+
+            .logo {
+                background-position: center top;
+                width: 100%;
+                transition-delay: 0.5s;
+            }
+        }
+    }
+}
+
+.logo {
+    background: url('../' + $image-path + 'logo-jeuxamateurs-blanc.png') no-repeat center top;
+    color:transparent;
+    height: 40px;
+    background-position: center bottom;
+    transition: background-position 0.3s ease-in;
+}

@@ -1,0 +1,111 @@
+$blue: #008fff;
+$black: #2c2c2c;
+$base-font: 'Open Sans', sans-serif;
+$base-text-color: darken(#fff, 87%);
+
+$image-path: 'images/';
+
+$screen-small: 768px;
+$screen-medium: 992px;
+$screen-large: 1200px;
+
+$inuit-base-font-size:   16px;
+$inuit-base-line-height: 24px;
+@import "~inuit-defaults/_settings.defaults.scss";
+$breakpoints: (
+    "phone"          "screen and (max-width: 21.813em)",
+    "tablet"         "screen and (min-width: 21.9375em) and (max-width: 44.9375em)",
+    "lap"            "screen and (min-width: 45em) and (max-width: 63.9375em)",
+    "desk"           "screen and (min-width: 64em)",
+    "deskhd"         "screen and (min-width: 90em)",
+    "retina"         "(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi), (min-resolution: 2dppx)"
+);
+@import "~inuit-responsive-settings/_settings.responsive.scss";
+
+@import "~inuit-functions/_tools.functions.scss";
+@import "~inuit-mixins/_tools.mixins.scss";
+@import "~inuit-tools-widths/_tools.widths.scss";
+@import "~inuit-responsive-tools/_tools.responsive.scss";
+
+@import "~inuit-normalize/_generic.normalize.scss";
+@import "~inuit-box-sizing/_generic.box-sizing.scss";
+@import "~inuit-reset/_generic.reset.scss";
+
+$inuit-enable-layout--tiny:     true;
+$inuit-enable-layout--small:    true;
+$inuit-enable-layout--large:    true;
+$inuit-enable-layout--huge:     true;
+$inuit-enable-layout--flush:    true;
+$inuit-enable-layout--rev:      true;
+$inuit-enable-layout--middle:   true;
+$inuit-enable-layout--bottom:   true;
+$inuit-enable-layout--right:    true;
+$inuit-enable-layout--center:   true;
+$inuit-enable-layout--auto:     true;
+@import "~inuit-layout/_objects.layout.scss";
+@import "_objects.container.scss";
+@import "_objects.buttons.scss";
+
+@import "~inuit-widths/_trumps.widths.scss";
+@import "~inuit-responsive-widths/_trumps.widths-responsive.scss";
+
+$inuit-base-background-color: #eee;
+$inuit-base-text-color: $base-text-color;
+@import "~inuit-page/_base.page.scss";
+
+html, body {
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden;
+    font-family: $base-font;
+    text-align: justify;
+}
+
+body {
+    min-height: 100%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: $black;
+    font-weight: 100;
+}
+
+h1 {
+    text-align: center;
+}
+
+h2 {
+    font-size: 3em;
+    margin: 20px 0px;
+    padding: 15px 0px;
+}
+
+a {
+    text-decoration: none;
+    color: $blue;
+
+    &:hover {
+        color: $base-text-color;
+    }
+}
+// tmp
+.image-placeholder {
+    display: block;
+    background: #ddd;
+}
+
+.row {
+    margin: 0 -10px;
+}
+
+@import "forms";
+
+@import "sidebar";
+
+@import "lists";
+@import "tabs";
+@import "cards";
+@import "feeds";
+@import "content";
+
+@import "submenu";
