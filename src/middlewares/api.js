@@ -70,7 +70,7 @@ userPlaceholder = {
   followers: [],
 };
 
-async function callApi(endpoint, payload = {}, schema) {
+async function callApi(method, endpoint, payload = {}, schema) {
   const fullUrl = (endpoint.indexOf(API_ROOT) === -1) ? API_ROOT + endpoint : endpoint;
 
   // const response = await fetch(fullUrl);
@@ -97,10 +97,28 @@ async function callApi(endpoint, payload = {}, schema) {
             {...userPlaceholder, username: 'YoruNoHikage'},
           ];
         }
-        const username = /users\/(.*)+/gm.exec(endpoint);
+        const username = /users\/(.*)+/gm.exec(endpoint)[1];
         return {
           ...userPlaceholder,
           username,
+        };
+      } else if(endpoint.startsWith('user/favorites')) {
+        const slug = /user\/favorites\/(.*)+/gm.exec(endpoint)[1];
+        if(method === 'DELETE') {
+          return {
+            username: 'YoruNoHikage',
+            watchedGames: [{
+              slug,
+              watchers: [],
+            }],
+          };
+        }
+        return {
+          username: 'YoruNoHikage',
+          watchedGames: [{
+            slug,
+            watchers: [{username: 'YoruNoHikage'}],
+          }]
         };
       }
       throw new Error('no placeholder');
@@ -128,7 +146,7 @@ export const api = store => next => async action => {
   }
 
   let { endpoint } = callAPI;
-  const { schema, types, payload } = callAPI;
+  const { method = 'GET', schema, types, payload } = callAPI;
 
   if (typeof endpoint === 'function') {
     endpoint = endpoint(store.getState());
@@ -163,8 +181,13 @@ export const api = store => next => async action => {
   }));
 
   try {
-    const response = await callApi(endpoint, payload, schema);
+    const response = await callApi(method, endpoint, payload, schema);
     next(actionWith({
+      request: {
+        endpoint,
+        method,
+        payload,
+      },
       response,
       type: successType,
     }));

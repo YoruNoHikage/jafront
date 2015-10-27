@@ -4,9 +4,9 @@ import { checkUsername } from '../actions/auth';
 
 import Button from './Button';
 
-const LoginForm = ({ onSubmit, auth, auth: { username }, dispatch }) => {
+const LoginForm = ({ className, onSubmit }) => {
   return (
-    <form onSubmit={onSubmit} className="layout__item u-1/2">
+    <form onSubmit={onSubmit} className={className}>
       <div className="form-group">
         <label htmlFor="login-username">Nom d'utilisateur</label>
         <input id="login-username" name="login-username" className="form-input" type="text" placeholder="JohnSmith" />

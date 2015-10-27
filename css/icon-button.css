@@ -1,15 +1,19 @@
 .default {
-    background: none;
-    border: none;
-    padding: 0;
+  background: none;
+  border: none;
+  padding: 0;
 
-    color: #ddd;
-    transition: all .3s ease-out;
-    font-size: 2rem;
+  color: #ddd;
+  transition: all .3s ease-out;
+  font-size: 2rem;
 }
 
-.default:hover {
-    color: #ff7373;
+.default:hover, .active {
+  color: #ff7373;
+}
+
+.active:hover {
+  color: #ddd;
 }
 
 .small {

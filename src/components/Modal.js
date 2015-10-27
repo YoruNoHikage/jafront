@@ -1,5 +1,5 @@
 import React from 'react';
-import Base from '../../../react-modal';
+import Base from 'react-modal';
 
 import styles from '../../css/modal.css';
 

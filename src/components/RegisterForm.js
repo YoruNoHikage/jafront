@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import { checkUsername } from '../actions/auth';
 
 import Button from './Button';
 import AutocheckInputText from './AutocheckInputText';
 
-const RegisterForm = ({ onSubmit, auth: { username }, dispatch }) => {
+function mapStateToProps(state) {
+  return {
+    username: state.auth.username,
+  };
+}
+
+const RegisterForm = ({ className, onSubmit, username, dispatch }) => {
   return (
-    <form onSubmit={onSubmit} className="layout__item u-1/2">
+    <form onSubmit={onSubmit} className={className}>
       <div className="form-group">
         <label htmlFor="register-username">Nom d'utilisateur</label>
         <AutocheckInputText
@@ -27,5 +34,4 @@ const RegisterForm = ({ onSubmit, auth: { username }, dispatch }) => {
   );
 }
 
-// export default connect()(RegisterForm);
-export default RegisterForm;
+export default connect(mapStateToProps)(RegisterForm);

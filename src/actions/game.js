@@ -44,6 +44,20 @@ export function loadGame(slug) {
   }
 }
 
+export const FAVORITE_GAME_REQUEST = 'FAVORITE_GAME_REQUEST';
+export const FAVORITE_GAME_SUCCESS = 'FAVORITE_GAME_SUCCESS';
+export const FAVORITE_GAME_FAILURE = 'FAVORITE_GAME_FAILURE';
+export function favoriteGame(slug, favorited) {
+  return {
+    [CALL_API]: {
+      method: favorited ? 'DELETE' : 'PUT',
+      endpoint: `user/favorites/${slug}`,
+      types: [FAVORITE_GAME_REQUEST, FAVORITE_GAME_SUCCESS, FAVORITE_GAME_FAILURE],
+      schema: Schemas.USER,
+    }
+  }
+}
+
 export const NEW_GAME_REQUEST = 'NEW_GAME_REQUEST';
 export const NEW_GAME_SUCCESS = 'NEW_GAME_SUCCESS';
 export const NEW_GAME_FAILURE = 'NEW_GAME_FAILURE';

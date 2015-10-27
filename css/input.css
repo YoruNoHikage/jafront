@@ -1,0 +1,22 @@
+.default {
+  display: block;
+  width: 100%;
+  padding: 0.375rem;
+  line-height: 1.5;
+  color: #555;
+  background-color: #FFF;
+  border: none;
+  border-bottom: 0.125rem solid #CCC;
+}
+
+.default:invalid:empty {
+  box-shadow: none;
+}
+
+.default:invalid {
+  border-color: #f00;
+}
+
+.default:focus, .default:active {
+  border-color: #008fff;
+}

@@ -26,7 +26,7 @@ export default class HomePage extends Component {
   render() {
     const lastGames = new Array(8).fill(null).map((e,index) => {
       return (
-        <div className="item">
+        <div key={index} className="item">
           <img src={"http://lorempixel.com/200/200?" + index}/>
         </div>
       );
@@ -38,7 +38,7 @@ export default class HomePage extends Component {
         </a>
       );
     });
-    grid('.last-games', '.item');
+    grid({container: '.last-games', item: '.item', gutter: 5});
     return (
       <div>
         <div className="title">

@@ -1,12 +1,36 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { checkRegistration } from '../actions/auth';
+
 import RegisterForm from '../components/RegisterForm';
+import ExternalLogin from '../components/ExternalLogin';
+
+function mapStateToProps(state) {
+  return {
+    isAuthenticated: state.auth.user != null,
+    router: state.router,
+  };
+}
 
 class LogPage extends Component {
   handleSubmit(e) {
     e.preventDefault();
-    dispatch();
+    const {
+      ['register-username']: {value: username},
+      ['register-email']: {value: email},
+      ['register-password']: {value: password},
+    } = e.target;
+
+    this.props.dispatch(checkRegistration(username, email, password));
+  }
+
+  componentWillMount() {
+    const { isAuthenticated, history, router } = this.props;
+    if(isAuthenticated) {
+      const path = router.location.query.return || '/';
+      history.pushState(null, path);
+    }
   }
 
   render() {
@@ -20,7 +44,8 @@ class LogPage extends Component {
           <div className="layout layout--center">
             <div className="layout__item u-1/2 layout layout--middle">
               <div className="panel">
-                {/*<RegisterForm onSubmit={this.handleSubmit.bind(this)} />*/}
+                <RegisterForm onSubmit={this.handleSubmit.bind(this)} className="layout__item u-1/2" />
+                <ExternalLogin className="layout__item layout--center u-1/2" />
               </div>
             </div>
           </div>
@@ -30,10 +55,4 @@ class LogPage extends Component {
   }
 }
 
-function select(state) {
-  return {
-    // games: state.user,
-  };
-}
-
-export default connect(select)(LogPage)
+export default connect(mapStateToProps)(LogPage);

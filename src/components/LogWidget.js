@@ -10,6 +10,7 @@ import Modal from './Modal';
 import Button from './Button';
 import ButtonGroup from './ButtonGroup';
 import Avatar from './Avatar';
+import ExternalLogin from './ExternalLogin';
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
 
@@ -18,8 +19,6 @@ import styles from '../../css/logbox.css';
 function mapStateToProps(state) {
   const { pathname, search } = state.router.location;
   return {
-    auth: state.auth,
-    user: state.auth.user,
     location: pathname + search,
   };
 }
@@ -71,13 +70,11 @@ export default class LogWidget extends Component {
   }
 
   render() {
-    const { auth, dispatch } = this.props;
-
     let modalForm;
     if(this.state.isRegister) {
-      modalForm = <RegisterForm auth={auth} dispatch={dispatch} onSubmit={this.handleRegistration.bind(this)} />;
+      modalForm = <RegisterForm onSubmit={this.handleRegistration.bind(this)} className="layout__item u-1/2" />;
     } else {
-      modalForm = <LoginForm auth={auth} dispatch={dispatch} onSubmit={this.handleLogin.bind(this)} />;
+      modalForm = <LoginForm onSubmit={this.handleLogin.bind(this)} className="layout__item u-1/2" />;
     }
 
     return (
@@ -96,33 +93,7 @@ export default class LogWidget extends Component {
           <h2>{this.state.isRegister ? "S'inscrire" : "Se connecter"}</h2>
           <div className="layout layout--middle">
             {modalForm}
-
-            <div className="layout__item layout--center u-1/2">
-              <div className="form-group">
-                <a href="https://github.com/login/oauth/authorize?client_id=164a33cf96520b3b9c15" role="button" style={{backgroundColor: '#F5F5F5', color: '#333', border: 'none', padding: '0.25rem 0.5rem'}}>
-                  <i className="fa fa-fw fa-github"></i>
-                  Se connecter avec GitHub
-                </a>
-              </div>
-              <div className="form-group">
-                <button type="button" style={{backgroundColor: '#55ACEE', color: '#fff', border: 'none', padding: '0.25rem 0.5rem', opacity: '0.3'}}>
-                  <i className="fa fa-fw fa-twitter"></i>
-                  Se connecter avec Twitter
-                </button>
-              </div>
-              <div className="form-group">
-                <a href="#" role="button" style={{backgroundColor: '#6441A5', color: '#fff', border: 'none', padding: '0.25rem 0.5rem', opacity: '0.3'}}>
-                  <i className="fa fa-fw fa-twitch"></i>
-                  Se connecter avec Twitch
-                </a>
-              </div>
-              <div className="form-group">
-                <a href="#" role="button" style={{backgroundColor: '#262627', color: '#E6E6E5', border: 'none', padding: '0.25rem 0.5rem', opacity: '0.3'}}>
-                  <i className="fa fa-fw fa-steam"></i>
-                  Se connecter avec Steam
-                </a>
-              </div>
-            </div>
+            <ExternalLogin className="layout__item layout--center u-1/2" />
           </div>
         </Modal>
       </div>

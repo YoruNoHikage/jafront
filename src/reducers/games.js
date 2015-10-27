@@ -45,7 +45,7 @@ function create(state = initialCreate, action) {
   }
 }
 
-function games(state = { loadingItem: true, loadingList: true, loadingNew: false, new: false }, action) {
+function games(state = { loadingItem: false, loadingList: false, loadingNew: false, new: false }, action) {
   switch(action.type) {
     // case NEW_GAME_REQUEST:
     //   return {

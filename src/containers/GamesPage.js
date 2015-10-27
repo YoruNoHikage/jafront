@@ -13,7 +13,7 @@ function mapStateToProps(state) {
 
   return {
     games,
-    isLoading: !!state.games.loadingList,
+    isLoading: !!state.games.games.loadingList,
   };
 }
 

@@ -1,11 +1,10 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
 
-import { loadGame } from '../actions/game';
+import { loadGame, favoriteGame } from '../actions/game';
 
 import Dropzone from 'react-dropzone';
-import TagsInput from 'react-tagsinput';
-import tagscss from 'style!css!react-tagsinput/react-tagsinput.css';
+import EditableTags from '../components/EditableTags';
 import IconButton from '../components/IconButton';
 import Button from '../components/Button';
 import EditableTitle from '../components/EditableTitle';
@@ -19,11 +18,24 @@ import GameList from "../components/GameList";
 function mapStateToProps(state) {
   const { slug } = state.router.params;
   const { games, technologies, users } = state.entities;
+  let currentUser = state.auth.user || {};
+  // TODO: tmp
+  currentUser.username = 'YoruNoHikage';
+
+  // getting game if it exists in entities
+  const rawGame = games[slug];
+  let game = rawGame;
+  if(game) {
+    game = {
+      ...rawGame,
+      technologies: game.technologies.map(slug => technologies[slug]),
+    };
+  }
 
   return {
     slug,
-    game: games[slug],
-    technologies,
+    game,
+    favoritedByUser: game && currentUser ? game.watchers.includes(currentUser.username) : false,
     isLoading: state.games.games.loadingItem,
   };
 }
@@ -56,17 +68,12 @@ export default class GamePage extends Component {
     });
   }
 
+  favorite(favorited = false) {
+    this.props.dispatch(favoriteGame(this.props.slug, favorited));
+  }
+
   render() {
-    const { game, technologies, isLoading, isEditing } = this.props;
-
-    let gameTechs = [];
-    if(isLoading === false /* && !error*/) {
-      gameTechs = game.technologies.map(slug => technologies[slug]);
-    }
-
-    const technologieList = gameTechs.map((tech, i) => {
-      return (<span key={tech.slug}>{i !== 0 ? ',' : ''} <a href="">{tech.name}</a></span>);
-    });
+    const { game, technologies, isLoading, isEditing, favoritedByUser } = this.props;
 
     const tmpTimeline = [{
       icon: 'https://secure.gravatar.com/avatar/bf71cb74fc30a417be576c509d8853fc?s=50',
@@ -112,16 +119,13 @@ export default class GamePage extends Component {
     });
 
     // elements that can be modified by state
-    let actions = '', technologiesTmp = '', logo = '';
+    let actions = '', logo = '';
     if(isEditing && game) {
       actions = (
-        <div>
-          <IconButton icon="check" onClick={() => {this.props.dispatch(this.props.history.pushState(null, `/games/${game.slug}`));}} />
-          <IconButton icon="remove" onClick={() => {this.props.dispatch(this.props.history.pushState(null, `/games/${game.slug}`));}} />
+        <div style={{display: 'inline-block'}}>
+          <IconButton icon="check" onClick={() => {this.props.history.pushState(null, `/games/${game.slug}`);}} />
+          <IconButton icon="remove" onClick={() => {this.props.history.pushState(null, `/games/${game.slug}`);}} />
         </div>
-      );
-      technologiesTmp = (
-        <TagsInput />
       );
       logo = (
         <Dropzone style={{}} onDrop={this.onDrop.bind(this)}>
@@ -132,22 +136,22 @@ export default class GamePage extends Component {
     } else if(game) {
       // TODO: Replace with <Link/> inside the IconButton component, verify for external links
       actions = (
-        <div>
-          <IconButton icon="edit" onClick={() => {this.props.dispatch(this.props.history.pushState(null, `/games/${game.slug}/edit`));}} />
+        <div style={{display: 'inline-block'}}>
+          <IconButton icon="edit" onClick={() => {this.props.history.pushState(null, `/games/${game.slug}/edit`);}} />
         </div>
       );
-      technologiesTmp = technologieList;
       logo = <Logo src="http://lorempixel.com/200/200" />; // TODO: game.logo
     } else {
-      technologiesTmp = 'Loading...';
       logo = <Logo src="http://lorempixel.com/200/200" />; // TODO: placeholder
     }
 
-    let title = '';
+    let title = '', technologiesTmp = '';
     if(game) {
-      title = <EditableTitle title={game.name} isEditing={isEditing} />;
+      title = <div style={{display: 'inline-block'}}><EditableTitle title={game.name} isEditing={isEditing} /></div>;
+      technologiesTmp = <EditableTags tags={game.technologies} isEditing={isEditing} placeholder="Add technology" />;
     } else {
-      title = <h2 style={{color: 'white'}}>Loading...</h2>;
+      title = <h2 style={{color: 'white'}} >Loading...</h2>;
+      technologiesTmp = <p>Loading...</p>;
     }
 
     return (
@@ -207,7 +211,7 @@ export default class GamePage extends Component {
                   </div>
 
                   <div style={{textAlign: 'center'}}>
-                    <IconButton icon="heart" size="large" onClick={() => console.log('todo', 'favorite action')} />
+                    <IconButton icon="heart" size="large" active={favoritedByUser} onClick={() => {this.favorite(favoritedByUser)}} />
                   </div>
                 </Card>
               </aside>

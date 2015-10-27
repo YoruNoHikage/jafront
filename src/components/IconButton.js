@@ -3,12 +3,13 @@ import classNames from 'classnames';
 
 import styles from '../../css/icon-button.css';
 
-const IconButton = ({children, icon, size, className, ...rest}) => {
+const IconButton = ({children, icon, size, active, className, ...rest}) => {
   const classes = classNames(
     styles.default,
     className,
     {
       [styles[size]]: size,
+      [styles['active']]: active,
     },
   );
 
