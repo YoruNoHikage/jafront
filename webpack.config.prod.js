@@ -3,9 +3,8 @@ var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-  devtool: 'eval',
+  devtool: 'source-map',
   entry: [
-    'webpack-hot-middleware/client',
     './src/index',
   ],
   output: {
@@ -14,8 +13,18 @@ module.exports = {
     publicPath: '/static/'
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
+      }
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      compressor: {
+        warnings: false
+      }
+    }),
+    new ExtractTextPlugin('styles.css', { allChunks: true }),
   ],
   resolve: {
     extensions: ['', '.js', '.jsx', '.scss']
@@ -27,11 +36,11 @@ module.exports = {
       include: path.join(__dirname, 'src')
     },{
       test: /\.scss$/,
-      loader: 'style!css?sourceMap!sass?sourceMap',
+      loader: ExtractTextPlugin.extract('style-loader', 'css?sourceMap!sass?sourceMap'),
       include: path.join(__dirname, 'scss')
     },{
       test: /\.css$/,
-      loader: 'style!css?sourceMap&modules&localIdentName=[path][name]---[local]',
+      loader: ExtractTextPlugin.extract('style-loader', 'css?sourceMap&modules&localIdentName=[path][name]---[local]'),
       include: path.join(__dirname, 'css')
     },{
       test: /\.png$/, loader: "url-loader?limit=100000"
