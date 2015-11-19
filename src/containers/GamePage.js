@@ -3,11 +3,14 @@ import { connect } from 'react-redux';
 
 import { loadGame, favoriteGame } from '../actions/game';
 
+import overlayStyles from '../../css/overlay.css';
+
 import Dropzone from 'react-dropzone';
 import EditableTags from '../components/EditableTags';
 import IconButton from '../components/IconButton';
 import Button from '../components/Button';
 import EditableTitle from '../components/EditableTitle';
+import Overlay from '../components/Overlay';
 import Logo from '../components/Logo';
 import Card from "../components/Card";
 import Timeline from "../components/Timeline";
@@ -44,7 +47,9 @@ function mapStateToProps(state) {
 export default class GamePage extends Component {
   constructor() {
     super();
-    this.state = {};
+    this.state = {
+      logoTmp: '',
+    };
   }
 
   componentWillMount() {
@@ -95,7 +100,7 @@ export default class GamePage extends Component {
       content: {
         text: <p>Une nouvelle version est sortie !</p>,
         date: 'Il y a 4 jours',
-        attachment: <Button href="#">Download</Button>,
+        attachment: <Button style={{display: 'inline-block'}} href="#">Download</Button>,
       },
     },{
       icon: 'https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png',
@@ -119,36 +124,47 @@ export default class GamePage extends Component {
     });
 
     // elements that can be modified by state
-    let actions = '', logo = '';
+    let actions = '', dropzone = '';
+    const logo = (
+      <div style={{
+        background: `url(${this.state.logoTmp || 'http://lorempixel.com/200/200'}) no-repeat center center / cover`,
+        width: '200px', height: '200px',
+        borderRadius: '50%',
+        border: '.188em solid #fff'
+      }}></div>
+    );
     if(isEditing && game) {
       actions = (
-        <div style={{display: 'inline-block'}}>
+        <div style={{display: 'inline-block', verticalAlign: 'middle'}}>
           <IconButton icon="check" onClick={() => {this.props.history.pushState(null, `/games/${game.slug}`);}} />
           <IconButton icon="remove" onClick={() => {this.props.history.pushState(null, `/games/${game.slug}`);}} />
         </div>
       );
-      logo = (
-        <Dropzone style={{}} onDrop={this.onDrop.bind(this)}>
-          <p><i className="fa fa-fw fa-photo="></i>Envoyer un logo</p>
-          <Logo src={this.state.logoTmp || "http://lorempixel.com/200/200"} />
+      dropzone = (
+        <Dropzone
+          multiple={false}
+          className={overlayStyles.default}
+          activeClassName={overlayStyles.onDrop}
+          style={{borderRadius: '50%', margin: 'auto', lineHeight: '200px', textAlign: 'center'}} onDrop={this.onDrop.bind(this)}>
+          {!this.state.logoTmp ? <p style={{display: 'inline-block', lineHeight: 'normal', verticalAlign: 'middle', color: '#fff'}}>
+            <i className="fa fa-fw fa-camera fa-2x"></i><br/>
+            Change logo
+          </p> : ''}
         </Dropzone>
       );
     } else if(game) {
       // TODO: Replace with <Link/> inside the IconButton component, verify for external links
       actions = (
-        <div style={{display: 'inline-block'}}>
+        <div style={{display: 'inline-block', verticalAlign: 'middle'}}>
           <IconButton icon="edit" onClick={() => {this.props.history.pushState(null, `/games/${game.slug}/edit`);}} />
         </div>
       );
-      logo = <Logo src="http://lorempixel.com/200/200" />; // TODO: game.logo
-    } else {
-      logo = <Logo src="http://lorempixel.com/200/200" />; // TODO: placeholder
     }
 
     let title = '', technologiesTmp = '';
     if(game) {
-      title = <div style={{display: 'inline-block'}}><EditableTitle title={game.name} isEditing={isEditing} /></div>;
-      technologiesTmp = <EditableTags tags={game.technologies} isEditing={isEditing} placeholder="Add technology" />;
+      title = <div style={{display: 'inline-block', verticalAlign: 'middle'}}><EditableTitle title={game.name} isEditing={isEditing} onChange={(e) => console.log(e.target.value)} /></div>;
+      technologiesTmp = <EditableTags tags={game.technologies} isEditing={isEditing} onChange={(e) => console.log(e)} placeholder="Add technology" />;
     } else {
       title = <h2 style={{color: 'white'}} >Loading...</h2>;
       technologiesTmp = <p>Loading...</p>;
@@ -165,7 +181,12 @@ export default class GamePage extends Component {
                 {actions}
               </div>
               <div className="layout__item u-1/3-deskhd u-1/3-desk u-1/3-lap">
-                {logo}
+                <div style={{padding: '0.5em'}}>
+                  <div style={{margin: 'auto', position: 'relative', width: '200px', height: '200px'}}>
+                    {logo}
+                    {dropzone}
+                  </div>
+                </div>
               </div>
             </div>
           </div>

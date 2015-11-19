@@ -129,6 +129,10 @@ async function callApi(method, endpoint, payload = {}, schema) {
   //   return Promise.reject(json);
   // }
 
+  //if(response.status === 204) {
+  //  // do something for PUT/DELETE resources
+  //}
+
   // const camelizedJson = camelizeKeys(json);
   const camelizedJson = response;
   // const nextPageUrl = getNextPageUrl(response) || undefined;

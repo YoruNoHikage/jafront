@@ -24,16 +24,16 @@ export default class HomePage extends Component {
   }
 
   render() {
-    const lastGames = new Array(8).fill(null).map((e,index) => {
+    const lastGames = new Array(8).fill(null).map((e, index) => {
       return (
-        <div key={index} className="item">
+        <div key={'games-' + index} className="item">
           <img src={"http://lorempixel.com/200/200?" + index}/>
         </div>
       );
     });
-    const contributors = this.state.contributors.map((e) => {
+    const contributors = this.state.contributors.map((e, index) => {
       return (
-        <a href={e.html_url}>
+        <a key={'contributors-' + index} href={e.html_url}>
           <img src={e.avatar_url + '&s=24'} />
         </a>
       );

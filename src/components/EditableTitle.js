@@ -10,9 +10,9 @@ const style = {
   fontWeight: '100',
 };
 
-const EditableTitle = ({ title, isEditing }) => (
+const EditableTitle = ({ title, isEditing, onChange }) => (
   isEditing ?
-    <Input style={style} type="text" placeholder="Grandma VS Alligator Zombies" defaultValue={title} />
+    <Input style={style} type="text" placeholder="Grandma VS Alligator Zombies" defaultValue={title} onChange={onChange} />
   :
     <h2 style={{color: 'white'}}>{title}</h2>
 );

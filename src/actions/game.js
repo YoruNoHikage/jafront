@@ -55,7 +55,7 @@ export function favoriteGame(slug, favorited) {
       types: [FAVORITE_GAME_REQUEST, FAVORITE_GAME_SUCCESS, FAVORITE_GAME_FAILURE],
       schema: Schemas.USER,
     }
-  }
+  };
 }
 
 export const NEW_GAME_REQUEST = 'NEW_GAME_REQUEST';

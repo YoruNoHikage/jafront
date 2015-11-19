@@ -1,0 +1,25 @@
+.default {}
+
+.icon {
+  width: 3em;
+}
+
+.icon img {
+  width: 100%;
+  border-radius: 100%;
+}
+
+.content {
+  vertical-align: top;
+  margin-top: .5em;
+  margin-left: .5em;
+}
+
+.content :global .meta {
+  font-size: .8em;
+  color: #888;
+}
+
+.content :global .attachment {
+  padding: .5em 0;
+}

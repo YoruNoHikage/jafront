@@ -7,6 +7,7 @@ import { canUseDOM } from 'exenv';
 import cookie from 'cookie';
 
 import test from '../scss/screen.scss';
+import fa from 'style!css!font-awesome/css/font-awesome.css';
 
 import configureStore from './store/configureStore';
 import routes from './routes';

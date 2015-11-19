@@ -1,9 +1,9 @@
 import React from 'react';
 
-const Logo = ({ src = 'http://lorempixel.com/200/200' }) => {
+const Logo = ({ src = 'http://lorempixel.com/200/200', alt = '' }) => {
   return (
     <figure style={{padding: '0.5em'}}>
-      <img src={src} alt="Avatar de YoruNoHikage" style={{display: 'block', margin: 'auto', background: 'rgb(255, 255, 255)', padding: '.188em', borderRadius: '50%'}} />
+      <img src={src} alt={alt} style={{display: 'block', margin: 'auto', border: '.188em solid #fff', borderRadius: '50%'}} />
     </figure>
   );
 }
