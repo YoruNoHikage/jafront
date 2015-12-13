@@ -48,7 +48,11 @@ export default class GamePage extends Component {
   constructor() {
     super();
     this.state = {
-      logoTmp: '',
+      edited: {
+        title: '',
+        logo: '',
+        technologies: '',
+      },
     };
   }
 
@@ -63,14 +67,6 @@ export default class GamePage extends Component {
     if(nextProps.slug !== this.props.slug) {
       this.props.dispatch(loadGame(nextProps.slug));
     }
-  }
-
-  onDrop(files) {
-    files.forEach((file)=> {
-      this.setState({
-        logoTmp: file.preview,
-      });
-    });
   }
 
   favorite(favorited = false) {
@@ -127,7 +123,7 @@ export default class GamePage extends Component {
     let actions = '', dropzone = '';
     const logo = (
       <div style={{
-        background: `url(${this.state.logoTmp || 'http://lorempixel.com/200/200'}) no-repeat center center / cover`,
+        background: `url(${this.state.edited.logo || 'http://lorempixel.com/200/200'}) no-repeat center center / cover`,
         width: '200px', height: '200px',
         borderRadius: '50%',
         border: '.188em solid #fff'
@@ -136,8 +132,8 @@ export default class GamePage extends Component {
     if(isEditing && game) {
       actions = (
         <div style={{display: 'inline-block', verticalAlign: 'middle'}}>
-          <IconButton icon="check" onClick={() => {this.props.history.pushState(null, `/games/${game.slug}`);}} />
-          <IconButton icon="remove" onClick={() => {this.props.history.pushState(null, `/games/${game.slug}`);}} />
+          <IconButton icon="check" onClick={() => {this.props.history.push(null, `/games/${game.slug}`);}} />
+          <IconButton icon="remove" onClick={() => {this.props.history.push(null, `/games/${game.slug}`);}} />
         </div>
       );
       dropzone = (
@@ -145,8 +141,8 @@ export default class GamePage extends Component {
           multiple={false}
           className={overlayStyles.default}
           activeClassName={overlayStyles.onDrop}
-          style={{borderRadius: '50%', margin: 'auto', lineHeight: '200px', textAlign: 'center'}} onDrop={this.onDrop.bind(this)}>
-          {!this.state.logoTmp ? <p style={{display: 'inline-block', lineHeight: 'normal', verticalAlign: 'middle', color: '#fff'}}>
+          style={{borderRadius: '50%', margin: 'auto', lineHeight: '200px', textAlign: 'center'}} onDrop={(files) => this.setState({edited: this.props.onDropLogo(files)})}>
+          {!this.state.edited.logo ? <p style={{display: 'inline-block', lineHeight: 'normal', verticalAlign: 'middle', color: '#fff'}}>
             <i className="fa fa-fw fa-camera fa-2x"></i><br/>
             Change logo
           </p> : ''}
@@ -156,14 +152,20 @@ export default class GamePage extends Component {
       // TODO: Replace with <Link/> inside the IconButton component, verify for external links
       actions = (
         <div style={{display: 'inline-block', verticalAlign: 'middle'}}>
-          <IconButton icon="edit" onClick={() => {this.props.history.pushState(null, `/games/${game.slug}/edit`);}} />
+          <IconButton icon="edit" onClick={() => {this.props.history.push(null, `/games/${game.slug}/edit`);}} />
         </div>
       );
     }
 
     let title = '', technologiesTmp = '';
     if(game) {
-      title = <div style={{display: 'inline-block', verticalAlign: 'middle'}}><EditableTitle title={game.name} isEditing={isEditing} onChange={(e) => console.log(e.target.value)} /></div>;
+      title = (
+        <div style={{display: 'inline-block', verticalAlign: 'middle'}}>
+          <EditableTitle title={game.name} isEditing={isEditing}
+            onChange={(e) => this.setState({edited: this.props.onChangeTitle(e.currentTarget.value)})}
+          />
+        </div>
+      );
       technologiesTmp = <EditableTags tags={game.technologies} isEditing={isEditing} onChange={(e) => console.log(e)} placeholder="Add technology" />;
     } else {
       title = <h2 style={{color: 'white'}} >Loading...</h2>;

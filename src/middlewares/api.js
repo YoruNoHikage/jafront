@@ -75,7 +75,7 @@ async function callApi(method, endpoint, payload = {}, schema) {
 
   // const response = await fetch(fullUrl);
   const response = await new Promise(function(resolve, reject) {
-    setTimeout(resolve, 3000, () => {
+    setTimeout(resolve, 3000, (() => {
       if(endpoint.startsWith('games')) {
         if(endpoint === 'games') {
           return [
@@ -122,7 +122,7 @@ async function callApi(method, endpoint, payload = {}, schema) {
         };
       }
       throw new Error('no placeholder');
-    }());
+    })());
   });
   // const json = await response.json();
   // if (!response.ok) {

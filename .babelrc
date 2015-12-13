@@ -1,10 +1,9 @@
 {
-  "stage": 0,
+  "presets": ["react", "stage-0", "es2015"],
   "env": {
     "development": {
-      "plugins": ["react-transform"],
-      "extra": {
-        "react-transform": {
+      "plugins": [
+        ["react-transform", {
           "transforms": [{
             "transform": "react-transform-hmr",
             "imports": ["react"],
@@ -13,8 +12,9 @@
             "transform": "react-transform-catch-errors",
             "imports": ["react", "redbox-react"]
           }]
-        }
-      }
+        }],
+        ["babel-plugin-transform-decorators-legacy"]
+      ]
     }
   }
 }

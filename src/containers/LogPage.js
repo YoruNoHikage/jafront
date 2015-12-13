@@ -29,7 +29,7 @@ class LogPage extends Component {
     const { isAuthenticated, history, router } = this.props;
     if(isAuthenticated) {
       const path = router.location.query.return || '/';
-      history.pushState(null, path);
+      history.push(null, path);
     }
   }
 

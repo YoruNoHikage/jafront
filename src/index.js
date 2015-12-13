@@ -1,4 +1,3 @@
-import 'babel-core/polyfill';
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
@@ -35,7 +34,7 @@ render(
     <Provider store={store}>
       <Router routes={routes} />
     </Provider>
-    {process.env.NODE_ENV !== 'production' ? require('./createDevTools')(store) : ''}
+    {process.env.NODE_ENV !== 'production' ? require('./createDevTools').default(store) : ''}
   </div>,
   document.getElementById('app')
 );

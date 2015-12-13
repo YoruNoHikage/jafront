@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { pushState, replaceState } from 'redux-router';
 
 import createHistory from 'history/lib/createBrowserHistory';
 
@@ -40,12 +39,12 @@ export default class LogWidget extends Component {
       isRegister,
       location: this.props.location,
     });
-    createHistory().replaceState(null, isRegister ? '/register' : '/login'); // TODO: proper way
+    createHistory().replace(null, isRegister ? '/register' : '/login'); // TODO: proper way
   }
 
   closeModal() {
     this.setState({modalIsOpen: false});
-    createHistory().replaceState(null, this.state.location); // TODO: proper way
+    createHistory().replace(null, this.state.location); // TODO: proper way
   }
 
   handleRegistration(e) {
