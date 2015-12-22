@@ -132,8 +132,8 @@ export default class GamePage extends Component {
     if(isEditing && game) {
       actions = (
         <div style={{display: 'inline-block', verticalAlign: 'middle'}}>
-          <IconButton icon="check" onClick={() => {this.props.history.push(null, `/games/${game.slug}`);}} />
-          <IconButton icon="remove" onClick={() => {this.props.history.push(null, `/games/${game.slug}`);}} />
+          <IconButton icon="check" onClick={() => {this.props.history.push(`/games/${game.slug}`);}} />
+          <IconButton icon="remove" onClick={() => {this.props.history.push(`/games/${game.slug}`);}} />
         </div>
       );
       dropzone = (
@@ -152,7 +152,7 @@ export default class GamePage extends Component {
       // TODO: Replace with <Link/> inside the IconButton component, verify for external links
       actions = (
         <div style={{display: 'inline-block', verticalAlign: 'middle'}}>
-          <IconButton icon="edit" onClick={() => {this.props.history.push(null, `/games/${game.slug}/edit`);}} />
+          <IconButton icon="edit" onClick={() => {this.props.history.push(`/games/${game.slug}/edit`);}} />
         </div>
       );
     }

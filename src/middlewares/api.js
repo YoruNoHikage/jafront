@@ -1,4 +1,5 @@
 import { Schema, arrayOf, normalize } from 'normalizr';
+import { camelizeKeys } from 'humps';
 
 const userSchema = new Schema('users', {
   idAttribute: 'username',
@@ -42,7 +43,7 @@ export const Schemas = {
 
 export const CALL_API = 'JA_API_CALL';
 
-const API_ROOT = 'http://dev.jeuxamateurs.fr/';
+const API_ROOT = 'http://localhost:8000/';
 
 let technologyPlaceholder = {};
 let gamePlaceholder = {};
@@ -71,7 +72,7 @@ userPlaceholder = {
 };
 
 async function callApi(method, endpoint, payload = {}, schema) {
-  const fullUrl = (endpoint.indexOf(API_ROOT) === -1) ? API_ROOT + endpoint : endpoint;
+  const fullUrl = (endpoint.indexOf(API_ROOT) === -1) ? API_ROOT + endpoint + '?_api=true&_format=json' : endpoint;
 
   // const response = await fetch(fullUrl);
   const response = await new Promise(function(resolve, reject) {

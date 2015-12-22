@@ -25,7 +25,7 @@ export default class GitHubLogPage extends Component {
 
   componentWillReceiveProps(props) {
     if(props.user && props.user.username) {
-      props.history.push(null, props.location.query.redirect || '/');
+      props.history.push(props.location.query.redirect || '/');
     }
   }
 

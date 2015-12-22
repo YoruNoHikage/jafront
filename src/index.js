@@ -11,6 +11,8 @@ import fa from 'style!css!font-awesome/css/font-awesome.css';
 import configureStore from './store/configureStore';
 import routes from './routes';
 
+import DevTools from './DevTools'; // TODO: move to another filer
+
 let localCookie, initialState = {};
 if(canUseDOM) {
   localCookie = cookie.parse(document.cookie);
@@ -30,11 +32,11 @@ if(localCookie && localCookie.token) {
 const store = configureStore(initialState);
 
 render(
-  <div>
-    <Provider store={store}>
+  <Provider store={store}>
+    <div>
       <Router routes={routes} />
-    </Provider>
-    {process.env.NODE_ENV !== 'production' ? require('./createDevTools').default(store) : ''}
-  </div>,
+      <DevTools />
+    </div>
+  </Provider>,
   document.getElementById('app')
 );

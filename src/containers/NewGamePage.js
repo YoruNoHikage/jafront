@@ -84,7 +84,7 @@ export default class NewGamePage extends Component {
   componentWillReceiveProps({ game, isLoading, history, dispatch }) {
     if(game.slug) {
       dispatch(resetNewGame());
-      history.push(null, `/games/${game.slug}`);
+      history.push(`/games/${game.slug}`);
     }
   }
 

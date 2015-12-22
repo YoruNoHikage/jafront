@@ -1,15 +1,21 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 import createLogger from 'redux-logger';
-import { devTools, persistState } from 'redux-devtools';
+import { persistState } from 'redux-devtools';
 import cookie from '../middlewares/cookie';
 import { api } from '../middlewares/api';
 
 import { reduxReactRouter } from 'redux-router';
 import createHistory from 'history/lib/createBrowserHistory';
 import routes from '../routes';
+import DevTools from '../DevTools';
 
 import rootReducer from '../reducers';
+
+function getDebugSessionKey() {
+  const matches = window.location.href.match(/[?&]debug_session=([^&]+)\b/);
+  return (matches && matches.length > 0)? matches[1] : null;
+}
 
 const middlewares = [thunk, cookie, api];
 if(process.env.NODE_ENV !== 'production') {
@@ -18,11 +24,13 @@ if(process.env.NODE_ENV !== 'production') {
   }));
 }
 
+console.log(DevTools.instrument());
+
 const enhancers = [applyMiddleware(...middlewares), reduxReactRouter({createHistory})];
 if(process.env.NODE_ENV !== 'production') {
   enhancers.push(compose(
-    devTools(),
-    persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/)),
+    DevTools.instrument(),
+    persistState(getDebugSessionKey()),
   ));
 }
 
