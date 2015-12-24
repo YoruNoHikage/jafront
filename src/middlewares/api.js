@@ -1,5 +1,6 @@
 import { Schema, arrayOf, normalize } from 'normalizr';
 import { camelizeKeys } from 'humps';
+import '../mockApi';
 
 const userSchema = new Schema('users', {
   idAttribute: 'username',
@@ -43,99 +44,33 @@ export const Schemas = {
 
 export const CALL_API = 'JA_API_CALL';
 
-const API_ROOT = 'http://localhost:8000/';
+export const API_ROOT = 'http://localhost:8000/';
 
-let technologyPlaceholder = {};
-let gamePlaceholder = {};
-let userPlaceholder = {};
-
-technologyPlaceholder= {name: 'SFML', slug: 'sfml'};
-
-gamePlaceholder = {
-  name: 'Awesome game',
-  slug: 'awesome-game',
-  owner: userPlaceholder,
-  watchers: [],
-  technologies: [
-    technologyPlaceholder,
-    {name: "C++", slug: "cpp"},
-  ],
-}
-
-userPlaceholder = {
-  username: 'YoruNoHikage',
-  usernameCanonical: 'yorunohikage',
-  games: [gamePlaceholder],
-  watchedGames: [],
-  following: [],
-  followers: [],
-};
-
-async function callApi(method, endpoint, payload = {}, schema) {
+async function callApi(method = 'GET', endpoint, payload, schema) {
   const fullUrl = (endpoint.indexOf(API_ROOT) === -1) ? API_ROOT + endpoint + '?_api=true&_format=json' : endpoint;
 
-  // const response = await fetch(fullUrl);
-  const response = await new Promise(function(resolve, reject) {
-    setTimeout(resolve, 3000, (() => {
-      if(endpoint.startsWith('games')) {
-        if(endpoint === 'games') {
-          return [
-            {...gamePlaceholder, slug: 'test', name: 'Test'},
-            {...gamePlaceholder, slug: 'test-2', name: 'Test 2'},
-          ];
-        }
-        let slug = /games\/(.*)+/gm.exec(endpoint)[1];
-        if(slug === 'new') { slug = 'new-game'; }
-        return {
-          ...gamePlaceholder,
-          slug,
-          name: `Name of ${slug}`,
-        };
-      } else if(endpoint.startsWith('users')) {
-        if(endpoint === 'users') {
-          return [
-            {...userPlaceholder, username: 'Jean-Michel'},
-            {...userPlaceholder, username: 'YoruNoHikage'},
-          ];
-        }
-        const username = /users\/(.*)+/gm.exec(endpoint)[1];
-        return {
-          ...userPlaceholder,
-          username,
-        };
-      } else if(endpoint.startsWith('user/favorites')) {
-        const slug = /user\/favorites\/(.*)+/gm.exec(endpoint)[1];
-        if(method === 'DELETE') {
-          return {
-            username: 'YoruNoHikage',
-            watchedGames: [{
-              slug,
-              watchers: [],
-            }],
-          };
-        }
-        return {
-          username: 'YoruNoHikage',
-          watchedGames: [{
-            slug,
-            watchers: [{username: 'YoruNoHikage'}],
-          }]
-        };
-      }
-      throw new Error('no placeholder');
-    })());
-  });
-  // const json = await response.json();
-  // if (!response.ok) {
-  //   return Promise.reject(json);
-  // }
+  let opts = { method };
+  if(method != 'GET' && payload) {
+    opts.mode = 'cors';
+    opts.body = JSON.stringify(payload);
+    opts.headers = {
+      "Authorization": 'Basic ' + btoa("Jean-Michel:password"),
+      'Accept': 'application/json',
+      "Content-Type": "application/json",
+    };
+  }
+
+  const response = await fetch(fullUrl, opts);
+  const json = await response.json();
+  if(!response.ok) {
+    return Promise.reject(json);
+  }
 
   //if(response.status === 204) {
   //  // do something for PUT/DELETE resources
   //}
 
-  // const camelizedJson = camelizeKeys(json);
-  const camelizedJson = response;
+  const camelizedJson = camelizeKeys(json);
   // const nextPageUrl = getNextPageUrl(response) || undefined;
 
   return {

@@ -20,10 +20,10 @@ const GameList = (props) => {
             </h3>
         </div>
         <div className="content">
-            In this game, you will have these reactions : owwww, aaah, uhhh, yeah. I can assure you about 3 hours of pure madness !
+            {game.description}
         </div>
-        <div className="footer">
-            <a href="#">
+        <div style={{display: 'flex', alignItems: 'center'}}>
+            <a href="#" style={{flex: '1'}}>
                 <span className="fa fa-users"></span>
                 Awesome team
             </a>

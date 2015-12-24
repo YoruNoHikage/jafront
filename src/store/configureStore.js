@@ -24,8 +24,6 @@ if(process.env.NODE_ENV !== 'production') {
   }));
 }
 
-console.log(DevTools.instrument());
-
 const enhancers = [applyMiddleware(...middlewares), reduxReactRouter({createHistory})];
 if(process.env.NODE_ENV !== 'production') {
   enhancers.push(compose(

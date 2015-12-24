@@ -64,7 +64,8 @@ export const NEW_GAME_FAILURE = 'NEW_GAME_FAILURE';
 export function newGame(name, description) {
   return {
     [CALL_API]: {
-      endpoint: `games/new`,
+      method: 'POST',
+      endpoint: `games`,
       types: [NEW_GAME_REQUEST, NEW_GAME_SUCCESS, NEW_GAME_FAILURE],
       schema: Schemas.GAME,
       payload: {

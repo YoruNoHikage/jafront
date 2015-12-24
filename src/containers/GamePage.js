@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
+import cx from 'classnames';
 
 import { loadGame, favoriteGame } from '../actions/game';
 
@@ -131,7 +132,7 @@ export default class GamePage extends Component {
     );
     if(isEditing && game) {
       actions = (
-        <div style={{display: 'inline-block', verticalAlign: 'middle'}}>
+        <div style={{paddingLeft: '10px'}}>
           <IconButton icon="check" onClick={() => {this.props.history.push(`/games/${game.slug}`);}} />
           <IconButton icon="remove" onClick={() => {this.props.history.push(`/games/${game.slug}`);}} />
         </div>
@@ -139,19 +140,20 @@ export default class GamePage extends Component {
       dropzone = (
         <Dropzone
           multiple={false}
-          className={overlayStyles.default}
+          className={cx(overlayStyles.default, {[overlayStyles.dropped]: this.state.edited.logo})}
           activeClassName={overlayStyles.onDrop}
-          style={{borderRadius: '50%', margin: 'auto', lineHeight: '200px', textAlign: 'center'}} onDrop={(files) => this.setState({edited: this.props.onDropLogo(files)})}>
-          {!this.state.edited.logo ? <p style={{display: 'inline-block', lineHeight: 'normal', verticalAlign: 'middle', color: '#fff'}}>
+          style={{borderRadius: '50%', margin: 'auto', lineHeight: '200px', textAlign: 'center'}}
+          onDrop={(files) => this.setState({edited: this.props.onDropLogo(files)})}>
+          <p className={overlayStyles.content}>
             <i className="fa fa-fw fa-camera fa-2x"></i><br/>
             Change logo
-          </p> : ''}
+          </p>
         </Dropzone>
       );
     } else if(game) {
       // TODO: Replace with <Link/> inside the IconButton component, verify for external links
       actions = (
-        <div style={{display: 'inline-block', verticalAlign: 'middle'}}>
+        <div style={{paddingLeft: '10px'}}>
           <IconButton icon="edit" onClick={() => {this.props.history.push(`/games/${game.slug}/edit`);}} />
         </div>
       );
@@ -160,7 +162,7 @@ export default class GamePage extends Component {
     let title = '', technologiesTmp = '';
     if(game) {
       title = (
-        <div style={{display: 'inline-block', verticalAlign: 'middle'}}>
+        <div style={{flex: '1'}}>
           <EditableTitle title={game.name} isEditing={isEditing}
             onChange={(e) => this.setState({edited: this.props.onChangeTitle(e.currentTarget.value)})}
           />
@@ -179,8 +181,10 @@ export default class GamePage extends Component {
           <div className="container">
             <div className="layout layout--bottom">
               <div className="layout__item u-2/3-deskhd u-2/3-desk u-2/3-lap">
-                {title}
-                {actions}
+                <div style={{display: 'flex', alignItems: 'center'}}>
+                  {title}
+                  {actions}
+                </div>
               </div>
               <div className="layout__item u-1/3-deskhd u-1/3-desk u-1/3-lap">
                 <div style={{padding: '0.5em'}}>

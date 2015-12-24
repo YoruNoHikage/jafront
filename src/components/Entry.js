@@ -1,7 +1,6 @@
 import React from 'react';
 
 import styles from '../../css/entry.css';
-console.log(styles);
 
 const Entry = ({ children, icon, alt }) => {
   // first div TMP, due to velocity's display block
