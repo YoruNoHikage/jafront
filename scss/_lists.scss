@@ -1,18 +1,20 @@
 .list {
     margin: 0;
     padding: 0;
-    
+
     li {
-        line-height: 2;
         display: flex;
     }
-    
+
     .type {
         display: inline-block;
         flex: 1;
+        padding: 0 5px;
+        margin-left: -5px;
     }
-    
+
     .value {
-        float: right;
+        padding: 0 5px;
+        margin-right: -5px;
     }
 }

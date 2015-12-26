@@ -1,0 +1,45 @@
+.default {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  overflow: hidden;
+  padding-left: 2px;
+  line-height: normal;
+}
+
+.tag {
+  background-color: #008fff;
+  border-radius: 3px;
+  color: #fff;
+  display: inline-block;
+  font-size: 13px;
+  font-weight: bold;
+  margin-right: 2px;
+  padding: 2px 5px;
+}
+
+.remove {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.tag .remove::before {
+  color: #fff;
+  content: " \d7";
+}
+
+.tag .remove:hover::before {
+  color: #000;
+}
+
+.input {
+  background: transparent;
+  border: none;
+  color: #777;
+  font-family: sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  outline: none;
+  padding: 5px;
+  padding-left: 0;
+  width: 80px;
+}

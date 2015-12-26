@@ -1,7 +1,7 @@
 import React from 'react';
 
 import TagsInput from 'react-tagsinput';
-import tagscss from 'style!css!react-tagsinput/react-tagsinput.css'; // TODO: erk css
+import tagsStyles from '../../css/tags.css';
 import IconButton from './IconButton';
 
 const EditableTags = ({ tags = [], isEditing = false, placeholder, onChange = () => {} }) => {
@@ -9,12 +9,16 @@ const EditableTags = ({ tags = [], isEditing = false, placeholder, onChange = ()
     const tagNames = tags.map((tag) => {
       return tag.name;
     });
-    return <TagsInput value={tagNames} placeholder={placeholder} onChange={onChange} />;
+    return <TagsInput className={tagsStyles.default} inputProps={{className: tagsStyles.input}} tagProps={{className: tagsStyles.tag, classNameRemove: tagsStyles.remove}} value={tagNames} placeholder={placeholder} onChange={onChange} />;
   } else {
     const formatedTags = tags.map((tag, i) => { // put that in a Tags component
-      return (<span key={tag.slug}>{i !== 0 ? ',' : ''} <a href="">{tag.name}</a></span>);
+      return (
+        <a key={tag.slug} className={tagsStyles.tag} href={`#/technologies/${tag.slug}`}>
+          {tag.name}
+        </a>
+      );
     });
-    return <div>{formatedTags}</div>;
+    return <ul>{formatedTags}</ul>;
   }
 };
 

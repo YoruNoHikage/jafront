@@ -1,5 +1,5 @@
 import fetchMock from 'fetch-mock';
-import slug from 'slug';
+import slugify from 'slug';
 
 const API_ROOT = 'http://localhost:8000/';
 
@@ -7,6 +7,7 @@ let technologyPlaceholder = {name: 'SFML', slug: 'sfml'};
 let gamePlaceholder = {
   name: 'Awesome game',
   slug: 'awesome-game',
+  logo: 'http://lorempixel.com/200/200',
   description: 'This is my super duper game about cookies',
   owner: {
     username: 'YoruNoHikage',
@@ -41,7 +42,7 @@ fetchMock.mock(buildUrl('games'), 'POST', (url, opts) => {
   const { name, description } = JSON.parse(opts.body);
   return {
     ...gamePlaceholder,
-    slug: slug(name),
+    slug: slugify(name),
     name,
     description,
   };
@@ -52,7 +53,18 @@ fetchMock.mock(buildUrl(/games\/(.+)/), 'GET', (url, opts) => {
   return {
     ...gamePlaceholder,
     slug,
-    name: `Name of ${slug}`,
+    name: slug,
+  };
+});
+
+fetchMock.mock(buildUrl(/games\/(.+)/), 'PUT', (url, opts) => {
+  const game = JSON.parse(opts.body);
+  const slug = slugify(game.name || '') || /games\/(.*)+\?/gm.exec(url)[1];
+  return {
+    ...gamePlaceholder,
+    ...game,
+    slug,
+    name: slug,
   };
 });
 

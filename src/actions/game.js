@@ -73,12 +73,29 @@ export function newGame(name, description) {
         description,
       },
     },
-  }
+  };
 }
 
 export const NEW_GAME_RESET = 'NEW_GAME_RESET';
 export function resetNewGame() {
   return {
     type: NEW_GAME_RESET,
+  };
+}
+
+export const EDIT_GAME_REQUEST = 'EDIT_GAME_REQUEST';
+export const EDIT_GAME_SUCCESS = 'EDIT_GAME_SUCCESS';
+export const EDIT_GAME_FAILURE = 'EDIT_GAME_FAILURE';
+export function editGame(slug, game) {
+  return {
+    [CALL_API]: {
+      method: 'PUT',
+      endpoint: `games/${slug}`,
+      types: [EDIT_GAME_REQUEST, EDIT_GAME_SUCCESS, EDIT_GAME_FAILURE],
+      schema: Schemas.GAME,
+      payload: {
+        ...game
+      },
+    },
   };
 }

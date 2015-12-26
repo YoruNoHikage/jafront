@@ -13,6 +13,10 @@ import {
   NEW_GAME_SUCCESS,
   NEW_GAME_FAILURE,
   NEW_GAME_RESET,
+
+  EDIT_GAME_REQUEST,
+  EDIT_GAME_SUCCESS,
+  EDIT_GAME_FAILURE,
 } from '../actions/game';
 
 const initialCreate = {name: '', description: ''};
@@ -39,6 +43,32 @@ function create(state = initialCreate, action) {
     case NEW_GAME_RESET:
       return {
         ...initialCreate,
+      };
+    default:
+      return state;
+  }
+}
+
+const initialEdit = {edited: false, isLoading: false};
+function edit(state = initialEdit, action) {
+  switch(action.type) {
+    case EDIT_GAME_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case EDIT_GAME_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        edited: true,
+        slug: action.response.result,
+      };
+    case EDIT_GAME_FAILURE:
+      return {
+        ...state,
+        isLoading: false,
+        error: true,
       };
     default:
       return state;
@@ -90,4 +120,5 @@ function games(state = { loadingItem: false, loadingList: false, loadingNew: fal
 export default combineReducers({
   games,
   create,
+  edit,
 })
