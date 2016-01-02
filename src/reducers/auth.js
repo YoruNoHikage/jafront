@@ -4,10 +4,8 @@ import {
   REQUEST_CHECK_USERNAME,
   RECEIVE_CHECK_USERNAME,
 
-  RECEIVE_REGISTRATION,
-
-  REQUEST_LOGIN,
-  RECEIVE_LOGIN,
+  REGISTRATION_SUCCESS,
+  LOGIN_SUCCESS,
 
   REQUEST_AUTH_GITHUB,
   RECEIVE_AUTH_GITHUB,
@@ -15,11 +13,12 @@ import {
 
 function user(state = null, action) {
   switch(action.type) {
-    case RECEIVE_LOGIN:
-    case RECEIVE_REGISTRATION:
+    case LOGIN_SUCCESS:
+    case REGISTRATION_SUCCESS:
+      const { result, entities } = action.response;
       return {
         ...state,
-        ...action.user,
+        ...entities.users[result],
       };
     default:
       return state;

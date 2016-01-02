@@ -13,8 +13,8 @@ export default class UserWidget extends Component {
       <div className="user">
         <Avatar title={this.props.username} src="https://secure.gravatar.com/avatar/bf71cb74fc30a417be576c509d8853fc?s=150" />
         <Menu>
-          <MenuItem name="Profil" icon="user" />
-          <MenuItem name="Projets" icon="rocket" />
+          <MenuItem icon="user">Profil</MenuItem>
+          <MenuItem icon="rocket">Projets</MenuItem>
         </Menu>
       </div>
     );

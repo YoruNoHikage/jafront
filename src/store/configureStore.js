@@ -17,7 +17,7 @@ function getDebugSessionKey() {
   return (matches && matches.length > 0)? matches[1] : null;
 }
 
-const middlewares = [thunk, cookie, api];
+const middlewares = [thunk, api, cookie];
 if(process.env.NODE_ENV !== 'production') {
   middlewares.push(createLogger({
     collapsed: true,

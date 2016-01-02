@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import createHistory from 'history/lib/createBrowserHistory';
 
-import { checkRegistration, checkLogin } from '../actions/auth';
+import { requestRegistration, requestLogin } from '../actions/auth';
 
 import Modal from './Modal';
 import Button from './Button';
@@ -55,7 +55,7 @@ export default class LogWidget extends Component {
       ['register-password']: {value: password},
     } = e.target;
 
-    this.props.dispatch(checkRegistration(username, email, password));
+    this.props.dispatch(requestRegistration(username, email, password));
   }
 
   handleLogin(e) {
@@ -65,7 +65,7 @@ export default class LogWidget extends Component {
       ['login-password']: {value: password},
     } = e.target;
 
-    this.props.dispatch(checkLogin(username, password));
+    this.props.dispatch(requestLogin(username, password));
   }
 
   render() {

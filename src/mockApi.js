@@ -20,7 +20,7 @@ let gamePlaceholder = {
 };
 let userPlaceholder = {
   username: 'YoruNoHikage',
-  username_canonical: 'yorunohikage',
+  email: 'yorunohikage@test.fr',
   games: [{slug: 'awesome-game'}],
   watched_games: [],
   following: [],
@@ -29,8 +29,28 @@ let userPlaceholder = {
 
 function buildUrl(endpoint) {
   endpoint = endpoint.source || endpoint;
-  return new RegExp(API_ROOT + endpoint + /\?/.source + '_api=true&_format=json');
+  return new RegExp(API_ROOT + endpoint);
 }
+
+// Auth
+fetchMock.mock(buildUrl('register'), 'POST', (url, opts) => {
+  const { username, email, password } = JSON.parse(opts.body);
+  return {
+    ...userPlaceholder,
+    username,
+    email,
+    token: 'Basic ' + btoa(`${username}:${password}`), // tmp
+  };
+});
+
+fetchMock.mock(buildUrl('login'), 'POST', (url, opts) => {
+  const { username, password } = JSON.parse(opts.body);
+  return {
+    ...userPlaceholder,
+    username,
+    token: 'Basic ' + btoa(`${username}:${password}`), // tmp
+  };
+});
 
 // Games
 fetchMock.mock(buildUrl('games'), 'GET', [

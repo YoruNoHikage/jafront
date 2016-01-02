@@ -1,14 +1,36 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-import GameList from "../components/GameList.js";
-import grid from "minigrid";
+import { Link } from 'react-router';
+import Button from '../components/Button';
+import Well from '../components/Well';
 
+import { loadGames } from '../actions/game';
+
+// Duplicate from GamesPages, TODO: change this
+function mapStateToProps(state) {
+  let games = []; // TODO: change this
+  for(var i in state.entities.games) {
+    games.push(state.entities.games[i]);
+  }
+
+  return {
+    games,
+    isLoading: !!state.games.games.loadingList,
+  };
+}
+
+@connect(mapStateToProps)
 export default class HomePage extends Component {
   constructor() {
     super();
     this.state = {
       contributors: []
     };
+  }
+
+  componentWillMount() {
+    this.props.dispatch(loadGames());
   }
 
   componentDidMount() {
@@ -24,13 +46,18 @@ export default class HomePage extends Component {
   }
 
   render() {
-    const lastGames = new Array(8).fill(null).map((e, index) => {
-      return (
-        <div key={'games-' + index} className="item">
-          <img src={"http://lorempixel.com/200/200?" + index}/>
-        </div>
-      );
-    });
+    const thumbnailStyles = {display: 'inline-block', margin: '0 10px 10px 0'};
+
+    let lastGames = '';
+    if(!this.props.isLoading) {
+      lastGames = this.props.games.map((game) => {
+        return (
+          <div key={game.slug} style={thumbnailStyles}>
+            <img style={{display: 'block'}} src={game.logo}/>
+          </div>
+        );
+      });
+    }
     const contributors = this.state.contributors.map((e, index) => {
       return (
         <a key={'contributors-' + index} href={e.html_url}>
@@ -38,7 +65,6 @@ export default class HomePage extends Component {
         </a>
       );
     });
-    grid({container: '.last-games', item: '.item', gutter: 5});
     return (
       <div>
         <div className="title">
@@ -66,8 +92,18 @@ export default class HomePage extends Component {
 
           <h2>Les derniers jeux ajoutés</h2>
 
-          <div className="last-games" style={{overflow: 'hidden', margin: 'auto'}}>
+          <div style={{margin: 'auto', lineHeight: '0', textAlign: 'center'}}>
             {lastGames}
+            <div style={thumbnailStyles}>
+              <div style={{display: 'table-cell', verticalAlign: 'middle', border: '5px dashed #ccc', width: '200px', height: '200px'}}>
+                <Link to="games/new">
+                  <Button> {/*Fix this Link/Button*/}
+                    <i className="fa fa-fw fa-plus" />
+                    Ajoutez votre jeu !
+                  </Button>
+                </Link>
+              </div>
+            </div>
           </div>
 
           <div style={{textAlign: 'center'}}>

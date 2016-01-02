@@ -1,3 +1,5 @@
+import { Schemas, CALL_API } from '../middlewares/api';
+
 export const REQUEST_CHECK_USERNAME = 'REQUEST_CHECK_USERNAME';
 export function requestCheckUsername(username) {
   return {
@@ -31,79 +33,39 @@ export function checkUsername(username) {
   };
 }
 
-export const REQUEST_REGISTRATION = 'REQUEST_REGISTRATION';
+export const REGISTRATION_REQUEST = 'REGISTRATION_REQUEST';
+export const REGISTRATION_SUCCESS = 'REGISTRATION_SUCCESS';
+export const REGISTRATION_FAILURE = 'REGISTRATION_FAILURE';
 export function requestRegistration(username, email, password) {
   return {
-    type: REQUEST_REGISTRATION,
-    username,
-    email,
-    password,
-  };
-}
-
-export const RECEIVE_REGISTRATION = 'RECEIVE_REGISTRATION';
-export function receiveRegistration(user) {
-  return {
-    type: RECEIVE_REGISTRATION,
-    user,
-  };
-}
-
-export function checkRegistration(username, email, password) {
-  return async function(dispatch) {
-    dispatch(requestRegistration(username, email, password));
-    try {
-      // TODO : own method in our API
-      const response = await new Promise(function(resolve, reject) {
-        setTimeout(resolve, 5000, {
-          username,
-          token: 'jwt token here',
-          email,
-        });
-      });
-
-      dispatch(receiveRegistration(response));
-    } catch(err) {
-      console.log('checkRegistration', 'todo, error handling');
-      dispatch(receiveRegistration(err));
+    [CALL_API]: {
+      method: 'POST',
+      endpoint: `register`,
+      types: [REGISTRATION_REQUEST, REGISTRATION_SUCCESS, REGISTRATION_FAILURE],
+      schema: Schemas.USER,
+      payload: {
+        username,
+        email,
+        password,
+      }
     }
   };
 }
 
-export const REQUEST_LOGIN = 'REQUEST_LOGIN';
+export const LOGIN_REQUEST = 'LOGIN_REQUEST';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 export function requestLogin(username, password) {
   return {
-    type: REQUEST_LOGIN,
-    username,
-    password,
-  };
-}
-
-export const RECEIVE_LOGIN = 'RECEIVE_LOGIN';
-export function receiveLogin(user) {
-  return {
-    type: RECEIVE_LOGIN,
-    user,
-  };
-}
-
-export function checkLogin(username, password) {
-  return async function(dispatch) {
-    dispatch(requestLogin(username, password));
-    try {
-      // TODO : own method in our API
-      const response = await new Promise(function(resolve, reject) {
-        setTimeout(resolve, 5000, {
-          username,
-          token: 'jwt token here',
-          email: 'jambon@patate.fr',
-        });
-      });
-
-      dispatch(receiveLogin(response));
-    } catch(err) {
-      console.log('checkLogin', 'todo, error handling');
-      dispatch(receiveLogin(err));
+    [CALL_API]: {
+      method: 'POST',
+      endpoint: `login`,
+      types: [LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE],
+      schema: Schemas.USER,
+      payload: {
+        username,
+        password,
+      }
     }
   };
 }

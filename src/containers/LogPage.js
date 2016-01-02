@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { checkRegistration } from '../actions/auth';
+import { requestRegistration } from '../actions/auth';
 
 import RegisterForm from '../components/RegisterForm';
 import ExternalLogin from '../components/ExternalLogin';
@@ -22,7 +22,7 @@ class LogPage extends Component {
       ['register-password']: {value: password},
     } = e.target;
 
-    this.props.dispatch(checkRegistration(username, email, password));
+    this.props.dispatch(requestRegistration(username, email, password));
   }
 
   componentWillMount() {

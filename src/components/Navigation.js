@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { Link } from "react-router";
-import { connect } from "react-redux";
+import { Link } from 'react-router';
+import { connect } from 'react-redux';
 
-import Avatar from "./Avatar.js";
-import LogWidget from "./LogWidget.js";
-import UserWidget from "./UserWidget.js";
+import StickySidebar from './StickySidebar';
+import Avatar from './Avatar';
+import LogWidget from './LogWidget';
+import UserWidget from './UserWidget';
 
-import Menu from "./navigation/Menu";
-import MenuItem from "./navigation/MenuItem";
+import Menu from './navigation/Menu';
+import MenuItem from './navigation/MenuItem';
 
 // @connect(state => ({ user: state.auth.user }))
 @connect(state => state)
@@ -21,20 +22,20 @@ export default class Navigation extends Component {
     };
 
     return (
-      <nav role="navigation" id="sidebar">
+      <StickySidebar>
         <h1 className="logo">
           <Link to="/">JeuxAmateurs</Link>
         </h1>
         {widget}
 
         <Menu>
-          <MenuItem name="Games" icon="gamepad" to="/games" />
-          <MenuItem name="Actualités" icon="newspaper-o" />
-          <MenuItem name="Tests" icon="bullhorn" />
-          <MenuItem name="Vidéos" icon="play-circle" />
-          <MenuItem name="Salon" icon="users" />
+          <MenuItem icon="gamepad" to="/games">Games</MenuItem>
+          {/*<MenuItem icon="newspaper-o">News</MenuItem>
+          <MenuItem icon="bullhorn">Tests</MenuItem>
+          <MenuItem icon="play-circle">Vidéos</MenuItem>
+          <MenuItem icon="users">Salon</MenuItem>*/}
         </Menu>
-      </nav>
+      </StickySidebar>
     );
   }
 }

@@ -8,7 +8,6 @@ export default function games(state = {}, action) {
       if(action.request.method === 'DELETE') {
         const username = action.response.result;
         const slug = /user\/favorites\/(.*)+/gm.exec(action.request.endpoint)[1];
-        //const
 
         const watchers = state[slug].watchers.filter(e => e != username);
         return {
