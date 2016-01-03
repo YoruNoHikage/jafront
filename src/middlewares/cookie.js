@@ -14,7 +14,7 @@ function saveAuthToken(token) {
   document.cookie = cookie.serialize('token', token, { expires });
 }
 
-function dropToken() {
+function dropAuthToken() {
   document.cookie = cookie.serialize('token', '', { expires: new Date() });
 }
 
@@ -45,7 +45,7 @@ const cookieMiddleware = store => next => action => {
       }
       break;
     case LOGOUT:
-      console.log('Logout, dropped token');
+      dropAuthToken();
       break;
   }
   return next(action);

@@ -29,28 +29,22 @@ let userPlaceholder = {
 
 function buildUrl(endpoint) {
   endpoint = endpoint.source || endpoint;
-  return new RegExp(API_ROOT + endpoint);
+  return new RegExp(API_ROOT + endpoint + '$');
 }
 
 // Auth
-fetchMock.mock(buildUrl('register'), 'POST', (url, opts) => {
-  const { username, email, password } = JSON.parse(opts.body);
+function authResponse(url, opts) {
+  const { username, email = 'jambon@patate.fr', password } = JSON.parse(opts.body);
   return {
     ...userPlaceholder,
     username,
     email,
     token: 'Basic ' + btoa(`${username}:${password}`), // tmp
   };
-});
+}
 
-fetchMock.mock(buildUrl('login'), 'POST', (url, opts) => {
-  const { username, password } = JSON.parse(opts.body);
-  return {
-    ...userPlaceholder,
-    username,
-    token: 'Basic ' + btoa(`${username}:${password}`), // tmp
-  };
-});
+fetchMock.mock(buildUrl('register'), 'POST', authResponse);
+fetchMock.mock(buildUrl('login'), 'POST', authResponse);
 
 // Games
 fetchMock.mock(buildUrl('games'), 'GET', [
@@ -69,7 +63,7 @@ fetchMock.mock(buildUrl('games'), 'POST', (url, opts) => {
 });
 
 fetchMock.mock(buildUrl(/games\/(.+)/), 'GET', (url, opts) => {
-  const slug = /games\/(.*)+\?/gm.exec(url)[1];
+  const slug = /games\/(((?!\?).)+)/gm.exec(url)[1];;
   return {
     ...gamePlaceholder,
     slug,
@@ -79,7 +73,7 @@ fetchMock.mock(buildUrl(/games\/(.+)/), 'GET', (url, opts) => {
 
 fetchMock.mock(buildUrl(/games\/(.+)/), 'PUT', (url, opts) => {
   const game = JSON.parse(opts.body);
-  const slug = slugify(game.name || '') || /games\/(.*)+\?/gm.exec(url)[1];
+  const slug = slugify(game.name || '') || /games\/(((?!\?).)+)/gm.exec(url)[1];
   return {
     ...gamePlaceholder,
     ...game,
@@ -95,7 +89,7 @@ fetchMock.mock(buildUrl('users'), 'GET', [
 ]);
 
 fetchMock.mock(buildUrl(/users\/(.+)/), 'GET', (url, opts) => {
-  const username = /users\/(.+)\?/gm.exec(url)[1];
+  const username = /users\/(((?!\?).)+)/gm.exec(url)[1];
   return {
     ...userPlaceholder,
     username,
@@ -104,7 +98,7 @@ fetchMock.mock(buildUrl(/users\/(.+)/), 'GET', (url, opts) => {
 
 // Authenticated User
 fetchMock.mock(buildUrl(/user\/favorites\/(.+)/), 'PUT', (url, opts) => {
-  const slug = /user\/favorites\/(.+)\?/gm.exec(url)[1];
+  const slug = /user\/favorites\/(((?!\?).)+)/gm.exec(url)[1];
   return {
     username: 'YoruNoHikage',
     watchedGames: [{
@@ -114,7 +108,7 @@ fetchMock.mock(buildUrl(/user\/favorites\/(.+)/), 'PUT', (url, opts) => {
   };
 });
 fetchMock.mock(buildUrl(/user\/favorites\/(.+)/), 'DELETE', (url, opts) => {
-  const slug = /user\/favorites\/(.+)\?/gm.exec(url)[1];
+  const slug = /user\/favorites\/(((?!\?).)+)/gm.exec(url)[1];
   return {
     username: 'YoruNoHikage',
     watchedGames: [{

@@ -7,6 +7,8 @@ import {
   REGISTRATION_SUCCESS,
   LOGIN_SUCCESS,
 
+  LOGOUT,
+
   REQUEST_AUTH_GITHUB,
   RECEIVE_AUTH_GITHUB,
 } from '../actions/auth';
@@ -18,8 +20,10 @@ function user(state = null, action) {
       const { result, entities } = action.response;
       return {
         ...state,
-        ...entities.users[result],
+        ...entities.users[result], // TODO: make it just a reference to the user entity
       };
+    case LOGOUT:
+      return null;
     default:
       return state;
   }

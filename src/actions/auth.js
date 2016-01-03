@@ -70,6 +70,13 @@ export function requestLogin(username, password) {
   };
 }
 
+export const LOGOUT = 'LOGOUT';
+export function logout() {
+  return {
+    type: LOGOUT,
+  };
+}
+
 /**
  * Auth GitHub
  * ===========

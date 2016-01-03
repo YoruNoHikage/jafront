@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { replaceState } from 'redux-router';
 
 import { requestRegistration } from '../actions/auth';
 
@@ -13,46 +14,43 @@ function mapStateToProps(state) {
   };
 }
 
-class LogPage extends Component {
-  handleSubmit(e) {
-    e.preventDefault();
-    const {
-      ['register-username']: {value: username},
-      ['register-email']: {value: email},
-      ['register-password']: {value: password},
-    } = e.target;
-
-    this.props.dispatch(requestRegistration(username, email, password));
-  }
-
-  componentWillMount() {
-    const { isAuthenticated, history, router } = this.props;
+@connect(mapStateToProps)
+export default class LogPage extends Component {
+  componentWillReceiveProps({ isAuthenticated, router, dispatch }) {
     if(isAuthenticated) {
       const path = router.location.query.return || '/';
-      history.push(path);
+      dispatch(replaceState(null, path));
     }
   }
 
-  render() {
+  renderPageOrModal(isModal, content) {
+    if(isModal) {
+      return content;
+    }
+
     return (
       <div className="container">
+        <header>
+          <h2>{this.props.title}</h2>
+        </header>
 
-          <header>
-            <h2>S'inscrire</h2>
-          </header>
-
-          <div className="layout layout--center">
-            <div className="layout__item u-1/2 layout layout--middle">
-              <div className="panel">
-                <RegisterForm onSubmit={this.handleSubmit.bind(this)} className="layout__item u-1/2" />
-                <ExternalLogin className="layout__item layout--center u-1/2" />
-              </div>
-            </div>
+        <div className="layout layout--center">
+          <div className="layout__item u-1/2 layout layout--middle">
+            {content}
           </div>
+        </div>
+      </div>
+    );
+  }
 
+  render() {
+    const { children, isModal } = this.props;
+
+    return this.renderPageOrModal(isModal,
+      <div className="panel">
+        {children}
+        <ExternalLogin className="layout__item layout--center u-1/2" />
       </div>
     );
   }
 }
-
-export default connect(mapStateToProps)(LogPage);

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
-import createHistory from 'history/lib/createBrowserHistory';
+import { pushState } from 'redux-router';
 
 import { requestRegistration, requestLogin } from '../actions/auth';
 
@@ -24,57 +23,8 @@ function mapStateToProps(state) {
 
 @connect(mapStateToProps)
 export default class LogWidget extends Component {
-  constructor() {
-    super();
-    this.state = {
-      modalIsOpen: false,
-      isRegister: false,
-      location: '',
-    };
-  }
-
-  openModal(isRegister) {
-    this.setState({
-      modalIsOpen: true,
-      isRegister,
-      location: this.props.location,
-    });
-    createHistory().replace(isRegister ? '/register' : '/login'); // TODO: proper way
-  }
-
-  closeModal() {
-    this.setState({modalIsOpen: false});
-    createHistory().replace(this.state.location); // TODO: proper way
-  }
-
-  handleRegistration(e) {
-    e.preventDefault();
-    const {
-      ['register-username']: {value: username},
-      ['register-email']: {value: email},
-      ['register-password']: {value: password},
-    } = e.target;
-
-    this.props.dispatch(requestRegistration(username, email, password));
-  }
-
-  handleLogin(e) {
-    e.preventDefault();
-    const {
-      ['login-username']: {value: username},
-      ['login-password']: {value: password},
-    } = e.target;
-
-    this.props.dispatch(requestLogin(username, password));
-  }
-
   render() {
-    let modalForm;
-    if(this.state.isRegister) {
-      modalForm = <RegisterForm onSubmit={this.handleRegistration.bind(this)} className="layout__item u-1/2" />;
-    } else {
-      modalForm = <LoginForm onSubmit={this.handleLogin.bind(this)} className="layout__item u-1/2" />;
-    }
+    const modalLinkState = { modal: true, returnTo: this.props.location };
 
     return (
       <div className={styles.default + " user"}>
@@ -82,19 +32,11 @@ export default class LogWidget extends Component {
         <div className={styles.absoluteContainer}>
           <div className={styles.tableContainer}>
             <ButtonGroup className={styles.logButtons}>
-              <Button type="negative" onClick={this.openModal.bind(this, false)}>Connexion</Button>
-              <Button type="negative" onClick={this.openModal.bind(this, true)}>Inscription</Button>
+              <Button onClick={() => this.props.dispatch(pushState(modalLinkState, '/login'))} type="negative">Connexion</Button>
+              <Button onClick={() => this.props.dispatch(pushState(modalLinkState, '/register'))} type="negative">Inscription</Button>
             </ButtonGroup>
           </div>
         </div>
-
-        <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.closeModal.bind(this)}>
-          <h2>{this.state.isRegister ? "S'inscrire" : "Se connecter"}</h2>
-          <div className="layout layout--middle">
-            {modalForm}
-            <ExternalLogin className="layout__item layout--center u-1/2" />
-          </div>
-        </Modal>
       </div>
     );
   }

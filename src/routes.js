@@ -10,7 +10,8 @@ import GameNews from "./containers/GameNews";
 import NewGamePage from "./containers/NewGamePage";
 import GamePage from "./containers/GamePage";
 import EditGamePage from "./containers/EditGamePage";
-import LogPage from "./containers/LogPage";
+import Register from "./containers/Register";
+import Login from "./containers/Login";
 import GitHubLogPage from "./containers/GitHubLogPage";
 
 export default {
@@ -18,9 +19,9 @@ export default {
   component: App,
   indexRoute: { component: HomePage },
   childRoutes: [
-    { path: 'register', component: LogPage },
+    { path: 'register', component: Register },
     { path: 'github', component: GitHubLogPage },
-    { path: 'login', component: LogPage },
+    { path: 'login', component: Login },
     { path: 'games', component: GamesPage },
     { path: 'games/new', component: NewGamePage },
     {
