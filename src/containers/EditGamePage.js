@@ -28,9 +28,9 @@ function mapStateToProps(state) {
 
 @connect(mapStateToProps)
 export default class EditGamePage extends Component {
-  componentWillReceiveProps(nextProps) {
-    if(nextProps.edited) {
-      this.props.history.push(`/games/${nextProps.slug}`);
+  componentWillReceiveProps({ edited, dispatch }) {
+    if(edited) {
+      dispatch(pushPath(`/games/${nextProps.slug}`));
     }
   }
 

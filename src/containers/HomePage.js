@@ -96,7 +96,7 @@ export default class HomePage extends Component {
             {lastGames}
             <div style={thumbnailStyles}>
               <div style={{display: 'table-cell', verticalAlign: 'middle', border: '5px dashed #ccc', width: '200px', height: '200px'}}>
-                <Link to="games/new">
+                <Link to="/games/new">
                   <Button> {/*Fix this Link/Button*/}
                     <i className="fa fa-fw fa-plus" />
                     Ajoutez votre jeu !

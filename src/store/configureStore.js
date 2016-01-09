@@ -5,8 +5,6 @@ import { persistState } from 'redux-devtools';
 import cookie from '../middlewares/cookie';
 import { api } from '../middlewares/api';
 
-import { reduxReactRouter } from 'redux-router';
-import createHistory from 'history/lib/createBrowserHistory';
 import routes from '../routes';
 import DevTools from '../DevTools';
 
@@ -24,7 +22,7 @@ if(process.env.NODE_ENV !== 'production') {
   }));
 }
 
-const enhancers = [applyMiddleware(...middlewares), reduxReactRouter({createHistory})];
+const enhancers = [applyMiddleware(...middlewares)];
 if(process.env.NODE_ENV !== 'production') {
   enhancers.push(compose(
     DevTools.instrument(),

@@ -52,7 +52,7 @@ function username(state = initialStateUsername, action) {
 
 const initialStateGitHub = {
   isLoading: false,
-  error: null,
+  error: '',
 };
 
 function github(state = initialStateGitHub, action) {

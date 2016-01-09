@@ -1,7 +1,9 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { ReduxRouter as Router } from 'redux-router';
+import { Router } from 'react-router';
+import createHistory from 'history/lib/createBrowserHistory';
+import { syncReduxAndRouter } from 'redux-simple-router';
 import { canUseDOM } from 'exenv';
 import cookie from 'cookie';
 
@@ -35,11 +37,13 @@ if(localCookie && localCookie.token) {
 }
 
 const store = configureStore(initialState);
+const history = createHistory();
+syncReduxAndRouter(history, store);
 
 render(
   <Provider store={store}>
     <div>
-      <Router routes={routes} />
+      <Router routes={routes} history={history} />
       <DevTools />
     </div>
   </Provider>,

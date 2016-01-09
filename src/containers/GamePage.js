@@ -1,5 +1,6 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { pushPath } from 'redux-simple-router';
 import cx from 'classnames';
 
 import { loadGame, editGame, favoriteGame } from '../actions/game';
@@ -8,7 +9,7 @@ import overlayStyles from '../../css/overlay.css';
 
 import Dropzone from 'react-dropzone';
 import EditableTags from '../components/EditableTags';
-import { IndexLink, Link } from 'react-router'
+import { IndexLink, Link } from 'react-router';
 import IconButton from '../components/IconButton';
 import Button from '../components/Button';
 import EditableTitle from '../components/EditableTitle';
@@ -18,10 +19,11 @@ import Card from '../components/Card';
 
 import objFilter from '../utils/obj-filter.js';
 
-function mapStateToProps(state) {
-  const { slug } = state.router.params;
-  const { games, technologies, users } = state.entities;
-  let currentUser = users[state.auth.user] || {};
+function mapStateToProps(state, ownProps) {
+  const { auth, entities } = state;
+  const { slug } = ownProps.params;
+  const { games, technologies, users } = entities;
+  const currentUser = users[auth.user] || {};
 
   // getting game if it exists in entities
   const rawGame = games[slug];
@@ -86,7 +88,7 @@ export default class GamePage extends Component {
       actions = (
         <div style={{paddingLeft: '10px'}}>
           <IconButton icon="check" onClick={this.validateEditGame.bind(this)} />
-          <IconButton icon="remove" onClick={() => {this.props.history.push(`/games/${game.slug}`);}} />
+          <IconButton icon="remove" onClick={() => {this.props.dispatch(pushPath(`/games/${game.slug}`));}} />
         </div>
       );
       dropzone = (
@@ -106,7 +108,7 @@ export default class GamePage extends Component {
       // TODO: Replace with <Link/> inside the IconButton component, verify for external links
       actions = (
         <div style={{paddingLeft: '10px'}}>
-          <IconButton icon="pencil" onClick={() => {this.props.history.push(`/games/${game.slug}/edit`);}} />
+          <IconButton icon="pencil" onClick={() => {this.props.dispatch(pushPath(`/games/${game.slug}/edit`));}} />
         </div>
       );
     }

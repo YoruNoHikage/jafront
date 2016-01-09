@@ -1,15 +1,16 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
+import { pushPath } from 'redux-simple-router';
 import revalidator from 'revalidator';
 
 import { newGame, resetNewGame } from '../actions/game';
 
 import NewGameForm from '../components/NewGameForm';
 
-function mapStateToProps(state) {
+function mapStateToProps({ games }) {
   return {
-    game: state.games.create,
-    isLoading: state.games.loadingNew,
+    game: games.create,
+    isLoading: games.loadingNew,
   };
 }
 
@@ -81,10 +82,10 @@ export default class NewGamePage extends Component {
     }
   }
 
-  componentWillReceiveProps({ game, isLoading, history, dispatch }) {
+  componentWillReceiveProps({ game, isLoading, dispatch }) {
     if(game.slug) {
       dispatch(resetNewGame());
-      history.push(`/games/${game.slug}`);
+      dispatch(pushPath(`/games/${game.slug}`));
     }
   }
 

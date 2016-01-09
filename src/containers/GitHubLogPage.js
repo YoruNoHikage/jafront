@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { pushPath } from 'redux-simple-router';
 
 import { checkUsername, requestAuthGitHub } from '../actions/auth';
 
 import AutocheckInputText from '../components/AutocheckInputText';
 import Button from '../components/Button';
 
-function mapStateToProps({ router, auth, entities }) {
+function mapStateToProps({ auth, entities }, ownProps) {
   return {
-    code: router.location.query.code,
     isLoading: auth.github.isLoading,
     user: entities.users[auth.user],
     username: auth.username,
@@ -19,13 +19,13 @@ function mapStateToProps({ router, auth, entities }) {
 export default class GitHubLogPage extends Component {
   componentDidMount() {
     if(!this.props.isLoading) {
-      this.props.dispatch(requestAuthGitHub(this.props.code));
+      this.props.dispatch(requestAuthGitHub(this.props.location.query.code));
     }
   }
 
-  componentWillReceiveProps(props) {
-    if(props.user && props.user.username) {
-      props.history.push(props.location.query.redirect || '/');
+  componentWillReceiveProps({ user, username, location, dispatch }) {
+    if(user && user.username) {
+      dispatch(pushPath(location.query.redirect || '/'));
     }
   }
 

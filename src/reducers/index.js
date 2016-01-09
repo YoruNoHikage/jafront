@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-import { routerStateReducer as router } from 'redux-router';
+import { routeReducer } from 'redux-simple-router';
 import entities from './entities';
 import games from './games';
 import auth from './auth';
@@ -9,7 +9,7 @@ const rootReducer = combineReducers({
   entities,
   auth,
   games,
-  router,
+  routing: routeReducer,
 });
 
 export default rootReducer;

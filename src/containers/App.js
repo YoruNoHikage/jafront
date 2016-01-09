@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { pushPath } from 'redux-simple-router';
 
 import Navigation from '../components/Navigation';
 import Modal from '../components/Modal';
@@ -40,7 +41,7 @@ export default class App extends Component {
             }
 
             {isModal && (
-              <Modal isOpen={true} onRequestClose={() => this.props.history.push(location.state.returnTo || '/')}>
+              <Modal isOpen={true} onRequestClose={() => pushPath(location.state.returnTo || '/')}>
                 {this.props.children}
               </Modal>
             )}
