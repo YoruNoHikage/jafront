@@ -21,9 +21,7 @@ import objFilter from '../utils/obj-filter.js';
 function mapStateToProps(state) {
   const { slug } = state.router.params;
   const { games, technologies, users } = state.entities;
-  let currentUser = state.auth.user || {};
-  // TODO: tmp
-  currentUser.username = 'YoruNoHikage';
+  let currentUser = users[state.auth.user] || {};
 
   // getting game if it exists in entities
   const rawGame = games[slug];

@@ -9,7 +9,7 @@ import Avatar from './Avatar';
 import Menu from './navigation/Menu';
 import MenuItem from "./navigation/MenuItem";
 
-@connect(state => state.auth.user)
+@connect(({entities, auth}) => entities.users[auth.user])
 export default class UserWidget extends Component {
   render() {
     return (

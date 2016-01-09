@@ -21,7 +21,7 @@ let gamePlaceholder = {
 let userPlaceholder = {
   username: 'YoruNoHikage',
   email: 'yorunohikage@test.fr',
-  games: [{slug: 'awesome-game'}],
+  games: [],
   watched_games: [],
   following: [],
   followers: [],
@@ -34,17 +34,22 @@ function buildUrl(endpoint) {
 
 // Auth
 function authResponse(url, opts) {
-  const { username, email = 'jambon@patate.fr', password } = JSON.parse(opts.body);
+  const { username, email = 'jambon@patate.fr', password, code } = JSON.parse(opts.body);
+  const token = code ? `oauth token ${code}` : null;
   return {
-    ...userPlaceholder,
-    username,
-    email,
-    token: 'Basic ' + btoa(`${username}:${password}`), // tmp
+    status: username ? 200 : 400,
+    body: {
+      ...userPlaceholder,
+      username,
+      email,
+      token: token || 'Basic ' + btoa(`${username}:${password}`), // tmp
+    }
   };
 }
 
 fetchMock.mock(buildUrl('register'), 'POST', authResponse);
 fetchMock.mock(buildUrl('login'), 'POST', authResponse);
+fetchMock.mock(buildUrl('oauth'), 'POST', authResponse);
 
 // Games
 fetchMock.mock(buildUrl('games'), 'GET', [

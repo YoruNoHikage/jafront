@@ -87,49 +87,20 @@ export function logout() {
  * 4. If username is taken, text input appears to get a new one available
  */
 
-export const REQUEST_AUTH_GITHUB = 'REQUEST_AUTH_GITHUB';
+export const AUTH_GITHUB_REQUEST = 'AUTH_GITHUB_REQUEST';
+export const AUTH_GITHUB_SUCCESS = 'AUTH_GITHUB_SUCCESS';
+export const AUTH_GITHUB_FAILURE = 'AUTH_GITHUB_FAILURE';
 export function requestAuthGitHub(code, username = null) {
   return {
-    type: REQUEST_AUTH_GITHUB,
-    code,
-    username,
-  };
-}
-
-export const RECEIVE_AUTH_GITHUB = 'RECEIVE_AUTH_GITHUB';
-export function receiveAuthGitHub(user, error = false) {
-  return {
-    type: RECEIVE_AUTH_GITHUB,
-    error,
-    user,
-  };
-}
-
-export function authGitHub(code, username) {
-  return async function(dispatch) {
-    dispatch(requestAuthGitHub(code, username));
-    try {
-      // TODO : server-side
-      // const response = await fetch(`http://api.jeuxamateurs.fr/register`);
-      const response = await new Promise(function(resolve, reject) {
-        setTimeout(resolve, 5000, {
-          username: username || 'YoruNoHikage',
-          token: 'jwt token github',
-        });
-      });
-
-      // TODO: remove, used to simulate username duplication
-      if(!username) {
-        throw {
-          message: 'username is already taken',
-        };
+    [CALL_API]: {
+      method: 'POST',
+      endpoint: `oauth`,
+      types: [AUTH_GITHUB_REQUEST, AUTH_GITHUB_SUCCESS, AUTH_GITHUB_FAILURE],
+      schema: Schemas.USER,
+      payload: {
+        username,
+        code,
       }
-
-      dispatch(receiveAuthGitHub(response));
-      dispatch(receiveLogin(response));
-    } catch(err) {
-      console.log('todo, error handling', err);
-      dispatch(receiveAuthGitHub({}, err.message));
     }
   };
 }

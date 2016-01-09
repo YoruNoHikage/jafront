@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { authGitHub, checkUsername } from '../actions/auth';
+import { checkUsername, requestAuthGitHub } from '../actions/auth';
 
 import AutocheckInputText from '../components/AutocheckInputText';
 import Button from '../components/Button';
 
-function mapStateToProps(state) {
+function mapStateToProps({ router, auth, entities }) {
   return {
-    code: state.router.location.query.code,
-    isLoading: state.auth.github.isLoading,
-    user: state.auth.github.user,
-    username: state.auth.username,
+    code: router.location.query.code,
+    isLoading: auth.github.isLoading,
+    user: entities.users[auth.user],
+    username: auth.username,
   };
 }
 
@@ -19,7 +19,7 @@ function mapStateToProps(state) {
 export default class GitHubLogPage extends Component {
   componentDidMount() {
     if(!this.props.isLoading) {
-      this.props.dispatch(authGitHub(this.props.code));
+      this.props.dispatch(requestAuthGitHub(this.props.code));
     }
   }
 
@@ -30,11 +30,15 @@ export default class GitHubLogPage extends Component {
   }
 
   handleSubmit(e) {
+    e.preventDefault();
+
     if(this.props.username.status === 'success') {
-      this.props.dispatch(authGitHub(this.props.code, this.props.username.value));
+      this.props.dispatch(requestAuthGitHub(this.props.code, this.props.username.value));
     } else {
       alert('Username is taken, I said !');
     }
+
+    return false;
   }
 
   render() {

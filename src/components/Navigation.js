@@ -10,12 +10,11 @@ import UserWidget from './UserWidget';
 import Menu from './navigation/Menu';
 import MenuItem from './navigation/MenuItem';
 
-// @connect(state => ({ user: state.auth.user }))
-@connect(state => state)
+@connect(state => ({ isAuthenticated: !!state.auth.user }))
 export default class Navigation extends Component {
   render() {
     let widget;
-    if(this.props.auth.user) {
+    if(this.props.isAuthenticated) {
       widget = <UserWidget />;
     } else {
       widget = <LogWidget />;
@@ -24,7 +23,7 @@ export default class Navigation extends Component {
     return (
       <StickySidebar>
         <h1 className="logo">
-          <Link to="/">JeuxAmateurs</Link>
+          <Link style={{color: 'transparent'}} to="/">JeuxAmateurs</Link>
         </h1>
         {widget}
 

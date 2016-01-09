@@ -19,12 +19,17 @@ if(canUseDOM) {
 }
 if(localCookie && localCookie.token) {
   initialState = {
-    auth: {
-      user: {
-        username: 'YoruNoHikage',
-        token: localCookie.token,
-        email: 'jambon@cookie.com',
+    entities: {
+      users: {
+        'YoruNoHikage': {
+          username: 'YoruNoHikage',
+          token: localCookie.token,
+          email: 'jambon@cookie.com',
+        }
       }
+    },
+    auth: {
+      user: 'YoruNoHikage',
     }
   };
 }

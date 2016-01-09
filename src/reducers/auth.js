@@ -7,21 +7,19 @@ import {
   REGISTRATION_SUCCESS,
   LOGIN_SUCCESS,
 
-  LOGOUT,
+  AUTH_GITHUB_REQUEST,
+  AUTH_GITHUB_SUCCESS,
+  AUTH_GITHUB_FAILURE,
 
-  REQUEST_AUTH_GITHUB,
-  RECEIVE_AUTH_GITHUB,
+  LOGOUT,
 } from '../actions/auth';
 
 function user(state = null, action) {
   switch(action.type) {
     case LOGIN_SUCCESS:
     case REGISTRATION_SUCCESS:
-      const { result, entities } = action.response;
-      return {
-        ...state,
-        ...entities.users[result], // TODO: make it just a reference to the user entity
-      };
+    case AUTH_GITHUB_SUCCESS:
+      return action.response.result;
     case LOGOUT:
       return null;
     default:
@@ -53,23 +51,23 @@ function username(state = initialStateUsername, action) {
 }
 
 const initialStateGitHub = {
-  user: null,
   isLoading: false,
   error: null,
 };
 
 function github(state = initialStateGitHub, action) {
   switch(action.type) {
-    case REQUEST_AUTH_GITHUB:
+    case AUTH_GITHUB_REQUEST:
       return {
         ...state,
         isLoading: true,
+        error: null,
       };
-    case RECEIVE_AUTH_GITHUB:
+    case AUTH_GITHUB_FAILURE:
+    case AUTH_GITHUB_SUCCESS:
       return {
         ...state,
-        user: action.user,
-        error: action.error,
+        error: action.error || null,
         isLoading: false,
       };
     default:
