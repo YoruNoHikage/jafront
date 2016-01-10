@@ -19,7 +19,7 @@ export default class Login extends Component {
 
   checkAuth({ isAuthenticated, location, dispatch }) {
     if(isAuthenticated) {
-      dispatch(replacePath(location.query.return || '/'));
+      dispatch(replacePath(location.query.returnTo || '/'));
     }
   }
 

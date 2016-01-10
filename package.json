@@ -30,7 +30,7 @@
     "babel-preset-stage-0": "^6.3.13",
     "css-loader": "^0.23.1",
     "express": "^4.13.3",
-    "extract-text-webpack-plugin": "^0.*",
+    "extract-text-webpack-plugin": "^1.0.1",
     "fetch-mock": "^4.0.1",
     "file-loader": "^0.8.5",
     "node-sass": "^3.4.2",

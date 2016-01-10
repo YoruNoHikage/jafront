@@ -14,10 +14,10 @@ import RegisterForm from './RegisterForm';
 
 import styles from '../../css/logbox.css';
 
-@connect()
+@connect(({ routing }) => ({path: routing.path}))
 export default class LogWidget extends Component {
   render() {
-    const modalLinkState = { modal: true, returnTo: this.props.location + this.props.search };
+    const endPath = this.props.path !== '/' ? `?returnTo=${this.props.path}` : '';
 
     return (
       <div className={styles.default + " user"}>
@@ -25,8 +25,8 @@ export default class LogWidget extends Component {
         <div className={styles.absoluteContainer}>
           <div className={styles.tableContainer}>
             <ButtonGroup className={styles.logButtons}>
-              <Button onClick={() => this.props.dispatch(pushPath('/login', modalLinkState))} type="negative">Connexion</Button>
-              <Button onClick={() => this.props.dispatch(pushPath('/register', modalLinkState))} type="negative">Inscription</Button>
+              <Button onClick={() => this.props.dispatch(pushPath(`/login${endPath}`, {modal: true}))} type="negative">Connexion</Button>
+              <Button onClick={() => this.props.dispatch(pushPath(`/register${endPath}`, {modal: true}))} type="negative">Inscription</Button>
             </ButtonGroup>
           </div>
         </div>

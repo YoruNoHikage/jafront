@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { pushPath } from 'redux-simple-router';
 
 import GamePage from './GamePage';
 

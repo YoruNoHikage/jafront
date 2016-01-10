@@ -5,7 +5,7 @@ import { pushPath } from 'redux-simple-router';
 import Navigation from '../components/Navigation';
 import Modal from '../components/Modal';
 
-@connect()
+@connect(state => ({urlReplaced: state.routing.replace}))
 export default class App extends Component {
   componentWillReceiveProps(nextProps) {
     if(nextProps.location.pathname !== this.props.location.pathname &&
@@ -41,7 +41,7 @@ export default class App extends Component {
             }
 
             {isModal && (
-              <Modal isOpen={true} onRequestClose={() => pushPath(location.state.returnTo || '/')}>
+              <Modal isOpen={true} onRequestClose={() => this.props.dispatch(pushPath(location.state.returnTo || '/'))}>
                 {this.props.children}
               </Modal>
             )}
