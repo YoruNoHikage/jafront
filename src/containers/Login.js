@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { replacePath } from 'redux-simple-router';
+import { routeActions } from 'react-router-redux';
 
 import { requestLogin } from '../actions/auth';
 
@@ -19,7 +19,7 @@ export default class Login extends Component {
 
   checkAuth({ isAuthenticated, location, dispatch }) {
     if(isAuthenticated) {
-      dispatch(replacePath(location.query.returnTo || '/'));
+      dispatch(routeActions.replace(location.query.returnTo || '/'));
     }
   }
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { pushPath } from 'redux-simple-router';
+import { routeActions } from 'react-router-redux';
 
 import GamePage from './GamePage';
 
@@ -29,9 +29,9 @@ function mapStateToProps(state) {
 
 @connect(mapStateToProps)
 export default class EditGamePage extends Component {
-  componentWillReceiveProps({ edited, dispatch }) {
+  componentWillReceiveProps({ edited, slug, dispatch }) {
     if(edited) {
-      dispatch(pushPath(`/games/${nextProps.slug}`));
+      dispatch(routeActions.push(`/games/${slug}`));
     }
   }
 

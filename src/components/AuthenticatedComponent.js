@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { replacePath } from 'redux-simple-router';
+import { routeActions } from 'react-router-redux';
 
 export default function requireAuthentication(Component) {
 
@@ -16,8 +16,12 @@ export default function requireAuthentication(Component) {
     checkAuth() {
       if(!this.props.isAuthenticated) {
         const redirectAfterLogin = this.props.location.pathname;
-        const path = redirectAfterLogin !== '/' ? `/login?returnTo=${redirectAfterLogin}` : '/login';
-        this.props.dispatch(replacePath(path));
+        const search = redirectAfterLogin !== '/' ? `?returnTo=${redirectAfterLogin}` : '';
+        this.props.dispatch(routeActions.replace({
+          pathname: '/login',
+          search,
+          // state: { modal: true }
+        }));
       }
     }
 

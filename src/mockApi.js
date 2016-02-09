@@ -1,7 +1,7 @@
 import fetchMock from 'fetch-mock';
 import slugify from 'slug';
 
-const API_ROOT = 'http://localhost:8000/';
+const API_ROOT = 'http://localhost:3000/api/';
 
 let technologyPlaceholder = {name: 'SFML', slug: 'sfml'};
 let gamePlaceholder = {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { pushPath } from 'redux-simple-router';
+import { routeActions } from 'react-router-redux';
 import cx from 'classnames';
 
 import { loadGame, editGame, favoriteGame } from '../actions/game';
@@ -88,7 +88,7 @@ export default class GamePage extends Component {
       actions = (
         <div style={{paddingLeft: '10px'}}>
           <IconButton icon="check" onClick={this.validateEditGame.bind(this)} />
-          <IconButton icon="remove" onClick={() => {this.props.dispatch(pushPath(`/games/${game.slug}`));}} />
+          <IconButton icon="remove" onClick={() => {this.props.dispatch(routeActions.push(`/games/${game.slug}`));}} />
         </div>
       );
       dropzone = (
@@ -108,7 +108,7 @@ export default class GamePage extends Component {
       // TODO: Replace with <Link/> inside the IconButton component, verify for external links
       actions = (
         <div style={{paddingLeft: '10px'}}>
-          <IconButton icon="pencil" onClick={() => {this.props.dispatch(pushPath(`/games/${game.slug}/edit`));}} />
+          <IconButton icon="pencil" onClick={() => {this.props.dispatch(routeActions.push(`/games/${game.slug}/edit`));}} />
         </div>
       );
     }
@@ -181,8 +181,8 @@ export default class GamePage extends Component {
                     <ul className="list">
                       <li>
                         <a className="type" href="#">
-                          <span className="fa fa-users fa-fw"></span>
-                          Awesome team
+                          <span className="fa fa-user fa-fw"></span>
+                          &nbsp;Owner
                         </a>
                         <div>
                           <Button>Follow</Button>
@@ -223,6 +223,7 @@ export default class GamePage extends Component {
                   <ul className="tabs">
                     <li><IndexLink activeClassName="selected" to={`/games/${this.props.slug}`}>Résumé</IndexLink></li>
                     <li><Link activeClassName="selected" to={`/games/${this.props.slug}/news`}>News</Link></li>
+                    <li><Link activeClassName="selected" to={`/games/${this.props.slug}/medias`}>Medias</Link></li>
                     {/*<li><a href="#">Tests</a></li>
                     <li><a href="#">Avis</a></li>
                     <li><a href="#"><i className="fa fa-fw fa-cog"/></a></li>*/}
@@ -230,6 +231,10 @@ export default class GamePage extends Component {
                 </nav>
 
                 <div className="panel" style={{borderRadius: '0px 3px 3px 3px'}}>
+                  <p>Todo List :</p>
+                  <ul>
+                    <li>Medias : Any member can add media</li>
+                  </ul>
                   {this.props.children}
                 </div>
               </div>

@@ -24,8 +24,8 @@ const GameList = (props) => {
         </div>
         <div style={{display: 'flex', alignItems: 'center'}}>
             <a href="#" style={{flex: '1'}}>
-                <span className="fa fa-users"></span>
-                Awesome team
+                <span className="fa fa-user"></span>
+                &nbsp;Owner
             </a>
             <Button>Follow</Button>
         </div>

@@ -13,7 +13,7 @@ const EditableTags = ({ tags = [], isEditing = false, placeholder, onChange = ()
   } else {
     const formatedTags = tags.map((tag, i) => { // put that in a Tags component
       return (
-        <a key={tag.slug} className={tagsStyles.tag} href={`#/technologies/${tag.slug}`}>
+        <a key={tag.slug} className={tagsStyles.tag}>
           {tag.name}
         </a>
       );

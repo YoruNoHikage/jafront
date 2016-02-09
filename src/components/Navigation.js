@@ -15,7 +15,14 @@ export default class Navigation extends Component {
   render() {
     let widget;
     if(this.props.isAuthenticated) {
-      widget = <UserWidget />;
+      widget = (
+        <div>
+          <UserWidget />
+          <Menu>
+            <MenuItem icon="plus" to="/games/new">Add a game</MenuItem>
+          </Menu>
+        </div>
+      );
     } else {
       widget = <LogWidget />;
     };
@@ -26,6 +33,8 @@ export default class Navigation extends Component {
           <Link style={{color: 'transparent'}} to="/">JeuxAmateurs</Link>
         </h1>
         {widget}
+
+        <hr style={{border: '1px solid #fff', margin: '-2px 10px'}} />
 
         <Menu>
           <MenuItem icon="gamepad" to="/games">Games</MenuItem>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { pushPath } from 'redux-simple-router';
+import { routeActions } from 'react-router-redux';
 
 import { requestRegistration, requestLogin } from '../actions/auth';
 
@@ -14,10 +14,15 @@ import RegisterForm from './RegisterForm';
 
 import styles from '../../css/logbox.css';
 
-@connect(({ routing }) => ({path: routing.path}))
+@connect(({ routing }) => ({path: routing.location.pathname}))
 export default class LogWidget extends Component {
   render() {
-    const endPath = this.props.path !== '/' ? `?returnTo=${this.props.path}` : '';
+    const returnTo = this.props.path !== '/' || this.props.path !== '/login' || this.props.path !== '/register' ? this.props.path : '';
+    const createModalTo = (pathname) => ({
+      pathname,
+      search: `?returnTo=${returnTo}`,
+      state: {modal: true},
+    });
 
     return (
       <div className={styles.default + " user"}>
@@ -25,8 +30,8 @@ export default class LogWidget extends Component {
         <div className={styles.absoluteContainer}>
           <div className={styles.tableContainer}>
             <ButtonGroup className={styles.logButtons}>
-              <Button onClick={() => this.props.dispatch(pushPath(`/login${endPath}`, {modal: true}))} type="negative">Connexion</Button>
-              <Button onClick={() => this.props.dispatch(pushPath(`/register${endPath}`, {modal: true}))} type="negative">Inscription</Button>
+              <Button onClick={() => this.props.dispatch(routeActions.push(createModalTo('/login')))} type="negative">Connexion</Button>
+              <Button onClick={() => this.props.dispatch(routeActions.push(createModalTo('/register')))} type="negative">Inscription</Button>
             </ButtonGroup>
           </div>
         </div>

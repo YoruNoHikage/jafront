@@ -12,14 +12,16 @@ import MenuItem from "./navigation/MenuItem";
 @connect(({entities, auth}) => entities.users[auth.user])
 export default class UserWidget extends Component {
   render() {
+    const title = (
+      <span>
+        {this.props.username}
+        <IconButton icon="sign-out" onClick={() => this.props.dispatch(logout())} />
+      </span>
+    );
+
     return (
       <div className="user">
-        <Avatar title={this.props.username} src="https://secure.gravatar.com/avatar/bf71cb74fc30a417be576c509d8853fc?s=150" />
-        <IconButton icon="sign-out" onClick={() => this.props.dispatch(logout())} />
-        <Menu>
-          <MenuItem icon="user">Profil</MenuItem>
-          <MenuItem icon="rocket">Projets</MenuItem>
-        </Menu>
+        <Avatar title={title} src="https://secure.gravatar.com/avatar/bf71cb74fc30a417be576c509d8853fc?s=150" />
       </div>
     );
   }

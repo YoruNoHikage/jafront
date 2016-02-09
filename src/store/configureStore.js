@@ -1,4 +1,6 @@
 import { createStore, applyMiddleware, compose } from 'redux';
+import { browserHistory } from 'react-router';
+import { syncHistory } from 'react-router-redux';
 import thunk from 'redux-thunk';
 import createLogger from 'redux-logger';
 import { persistState } from 'redux-devtools';
@@ -15,14 +17,15 @@ function getDebugSessionKey() {
   return (matches && matches.length > 0)? matches[1] : null;
 }
 
-const middlewares = [thunk, api, cookie];
+export const reduxRouterMiddleware = syncHistory(browserHistory);
+const middlewares = [thunk, api, cookie, reduxRouterMiddleware];
 if(process.env.NODE_ENV !== 'production') {
   middlewares.push(createLogger({
     collapsed: true,
   }));
 }
 
-const enhancers = [applyMiddleware(...middlewares)];
+const enhancers = [];
 if(process.env.NODE_ENV !== 'production') {
   enhancers.push(compose(
     DevTools.instrument(),
@@ -30,10 +33,15 @@ if(process.env.NODE_ENV !== 'production') {
   ));
 }
 
-const finalCreateStore = compose(...enhancers)(createStore);
-
 export default function configureStore(initialState) {
-  const store = finalCreateStore(rootReducer, initialState);
+  const store = createStore(
+    rootReducer,
+    initialState,
+    compose(
+      applyMiddleware(...middlewares),
+      ...enhancers,
+    ),
+  );
 
   if(module.hot) {
     // Enable Webpack hot module replacement for reducers

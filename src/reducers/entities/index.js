@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import merge from 'lodash/object/merge';
+import merge from 'lodash/merge';
 
 import games, { initialState as initialGames } from './games';
 import users, { initialState as initialUsers } from './users';

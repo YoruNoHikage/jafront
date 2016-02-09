@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { pushPath } from 'redux-simple-router';
+import { routeActions } from 'react-router-redux';
 
 import Navigation from '../components/Navigation';
 import Modal from '../components/Modal';
 
-@connect(state => ({urlReplaced: state.routing.replace}))
+@connect()
 export default class App extends Component {
   componentWillReceiveProps(nextProps) {
     if(nextProps.location.pathname !== this.props.location.pathname &&
@@ -41,7 +41,7 @@ export default class App extends Component {
             }
 
             {isModal && (
-              <Modal isOpen={true} onRequestClose={() => this.props.dispatch(pushPath(location.state.returnTo || '/'))}>
+              <Modal isOpen={true} onRequestClose={() => this.props.dispatch(routeActions.push(location.query.returnTo || '/'))}>
                 {this.props.children}
               </Modal>
             )}

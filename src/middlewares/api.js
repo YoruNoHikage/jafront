@@ -44,7 +44,7 @@ export const Schemas = {
 
 export const CALL_API = 'JA_API_CALL';
 
-export const API_ROOT = 'http://localhost:8000/';
+export const API_ROOT = 'http://localhost:3000/api/';
 
 async function callApi(method = 'GET', endpoint, payload, schema) {
   const fullUrl = (endpoint.indexOf(API_ROOT) === -1) ? API_ROOT + endpoint : endpoint;
