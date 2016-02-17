@@ -8,9 +8,9 @@ export default class Header extends Component {
       <div>
         <Navigation />
         <div className="mobile-header">
-            <a href="#" onClick={() => {document.getElementById('sidebar').classList.toggle('active')}}><i className="fa fa-bars"></i></a>
+            <a href="#" onClick={() => {document.getElementById('sidebar').classList.toggle('active')}}><span className="fa fa-bars" /></a>
             <h1 className="logo">JeuxAmateurs</h1>
-            <a href="#"><i className="fa fa-arrow-up"></i></a>
+            <a href="#"><span className="fa fa-arrow-up" /></a>
         </div>
       </div>
     );

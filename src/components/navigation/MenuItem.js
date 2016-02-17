@@ -4,7 +4,7 @@ import { Link } from "react-router";
 const MenuItem = ({ children, icon, to = '#' }) => (
   <li>
       <Link to={to}>
-          <i className={"fa fa-fw fa-" + icon}></i>
+          <span className={"fa fa-fw fa-" + icon} />
           {children}
       </Link>
   </li>

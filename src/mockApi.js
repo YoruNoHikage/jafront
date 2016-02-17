@@ -1,31 +1,11 @@
 import fetchMock from 'fetch-mock';
 import slugify from 'slug';
 
-const API_ROOT = 'http://localhost:3000/api/';
+import usersFixtures from './fixtures/users';
+import gamesFixtures from './fixtures/games';
+import technologiesFixtures from './fixtures/technologies';
 
-let technologyPlaceholder = {name: 'SFML', slug: 'sfml'};
-let gamePlaceholder = {
-  name: 'Awesome game',
-  slug: 'awesome-game',
-  logo: 'http://lorempixel.com/200/200',
-  description: 'This is my super duper game about cookies',
-  owner: {
-    username: 'YoruNoHikage',
-  },
-  watchers: [],
-  technologies: [
-    technologyPlaceholder,
-    {name: "C++", slug: "cpp"},
-  ],
-};
-let userPlaceholder = {
-  username: 'YoruNoHikage',
-  email: 'yorunohikage@test.fr',
-  games: [],
-  watched_games: [],
-  following: [],
-  followers: [],
-};
+const API_ROOT = 'http://localhost:3000/api/';
 
 function buildUrl(endpoint) {
   endpoint = endpoint.source || endpoint;
@@ -39,10 +19,13 @@ function authResponse(url, opts) {
   return {
     status: username ? 200 : 400,
     body: {
-      ...userPlaceholder,
       username,
       email,
       token: token || 'Basic ' + btoa(`${username}:${password}`), // tmp
+      games: [],
+      watched_games: [],
+      following: [],
+      followers: [],
     }
   };
 }
@@ -52,52 +35,78 @@ fetchMock.mock(buildUrl('login'), 'POST', authResponse);
 fetchMock.mock(buildUrl('oauth'), 'POST', authResponse);
 
 // Games
-fetchMock.mock(buildUrl('games'), 'GET', [
-  {...gamePlaceholder, slug: 'test', name: 'Test', description: 'Test ololol kikou game want to play.'},
-  {...gamePlaceholder, slug: 'test-2', name: 'Test 2', description: 'oh not again, this is the second version.'},
-]);
+fetchMock.mock(buildUrl('games'), 'GET', gamesFixtures);
 
 fetchMock.mock(buildUrl('games'), 'POST', (url, opts) => {
   const { name, description } = JSON.parse(opts.body);
+  const slug = slugify(name);
+
+  if(!gamesFixtures.find((game) => game.slug === slug)) {
+    const newGame = {
+      name,
+      slug,
+      description,
+      logo: `http://lorempixel.com/200/200?${slugify(name)}`,
+      owner: usersFixtures[0], // TODO: Authenticated user
+      technologies: [],
+      watchers: [],
+    };
+    gamesFixtures.push(newGame);
+    return newGame;
+  }
+
   return {
-    ...gamePlaceholder,
-    slug: slugify(name),
-    name,
-    description,
+    status: 400,
+    body: {error: `Game ${slug} already exists`},
   };
 });
 
 fetchMock.mock(buildUrl(/games\/(.+)/), 'GET', (url, opts) => {
-  const slug = /games\/(((?!\?).)+)/gm.exec(url)[1];;
-  return {
-    ...gamePlaceholder,
-    slug,
-    name: slug,
+  const slug = /games\/(((?!\?).)+)/gm.exec(url)[1];
+  const game = gamesFixtures.find((game) => game.slug === slug);
+
+  return game || {
+    status: 404,
+    body: {error: `Game ${slug} not found`},
   };
 });
 
 fetchMock.mock(buildUrl(/games\/(.+)/), 'PUT', (url, opts) => {
-  const game = JSON.parse(opts.body);
-  const slug = slugify(game.name || '') || /games\/(((?!\?).)+)/gm.exec(url)[1];
-  return {
-    ...gamePlaceholder,
-    ...game,
+  const editedGame = JSON.parse(opts.body);
+  const slug = slugify(editedGame.name || '') || /games\/(((?!\?).)+)/gm.exec(url)[1];
+  let game = gamesFixtures.find((game) => game.slug === slug);
+
+  const finalGame = {
+    name,
     slug,
-    name: slug,
+    description: '',
+    logo: `http://lorempixel.com/200/200?${slugify(name)}`,
+    owner: users[0],
+    technologies: [],
+    watchers: [],
+    ...game,
+    ...editedGame,
   };
+
+  if(game) {
+    gamesFixtures[gamesFixtures.indexOf(game)] = finalGame;
+  } else {
+    gamesFixtures.push(finalGame);
+  }
+
+  return existingGame;
 });
 
 // Users
-fetchMock.mock(buildUrl('users'), 'GET', [
-  {...userPlaceholder, username: 'Jean-Michel'},
-  {...userPlaceholder, username: 'YoruNoHikage'},
-]);
+fetchMock.mock(buildUrl('users'), 'GET', usersFixtures);
 
 fetchMock.mock(buildUrl(/users\/(.+)/), 'GET', (url, opts) => {
   const username = /users\/(((?!\?).)+)/gm.exec(url)[1];
-  return {
-    ...userPlaceholder,
-    username,
+  const user = usersFixtures.find((user) => user.username === username);
+
+  return user || {
+    status: 404,
+    body: {error: `User ${username} not found`},
   };
 });
 

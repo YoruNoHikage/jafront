@@ -15,6 +15,7 @@ const technologySchema = new Schema('technologies', {
 });
 
 userSchema.define({
+  technologies: arrayOf(technologySchema),
   games: arrayOf(gameSchema),
   watchedGames: arrayOf(gameSchema),
 

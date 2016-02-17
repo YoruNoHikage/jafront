@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { Link } from 'react-router';
+import ButtonLink from '../components/ButtonLink';
 import Button from '../components/Button';
 import Well from '../components/Well';
 
@@ -89,8 +90,8 @@ export default class HomePage extends Component {
         date: 'Il y a 4 jours',
         attachment: (
           <ButtonGroup>
-            <Button style={{display: 'inline-block'}} href="#">Download</Button>
-            <Button style={{display: 'inline-block'}} href="#">Review</Button>
+            <ButtonLink style={{display: 'inline-block'}} href="#">Download</ButtonLink>
+            <ButtonLink style={{display: 'inline-block'}} href="#">Review</ButtonLink>
           </ButtonGroup>
         ),
       },
@@ -164,12 +165,10 @@ export default class HomePage extends Component {
                 {lastGames}
                 <div style={thumbnailStyles}>
                   <div style={{display: 'table-cell', verticalAlign: 'middle', border: '5px dashed #ccc', width: '200px', height: '200px'}}>
-                    <Link to="/games/new">
-                      <Button> {/*Fix this Link/Button*/}
-                        <i className="fa fa-fw fa-plus" />
-                        Ajoutez votre jeu !
-                      </Button>
-                    </Link>
+                    <ButtonLink to="/games/new">
+                      <span className="fa fa-fw fa-plus" />
+                      Ajoutez votre jeu !
+                    </ButtonLink>
                   </div>
                 </div>
               </div>
@@ -178,7 +177,7 @@ export default class HomePage extends Component {
           </div>
 
           <div style={{textAlign: 'center'}}>
-            Made with <i className="fa fa-code"></i> by <br/>
+            Made with <span className="fa fa-code" /> by <br/>
             {contributors}
           </div>
 

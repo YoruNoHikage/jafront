@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import Timeline from "../components/Timeline";
 import Entry from "../components/Entry";
-import Button from '../components/Button';
+import ButtonLink from '../components/ButtonLink';
 
 function mapStateToProps(state) {
   return {
@@ -36,7 +36,7 @@ export default class GameTimeline extends Component {
       content: {
         text: <p>Une nouvelle version est sortie !</p>,
         date: 'Il y a 4 jours',
-        attachment: <Button style={{display: 'inline-block'}} href="#">Download</Button>,
+        attachment: <ButtonLink style={{display: 'inline-block'}} href="#">Download</ButtonLink>,
       },
     },{
       icon: 'https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png',

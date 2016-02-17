@@ -8,12 +8,13 @@ import MultipleMonitors from 'redux-devtools-dispatch/lib/MultipleMonitors';
 
 import * as acGame from './actions/game';
 import * as acAuth from './actions/auth';
+import * as acUser from './actions/user';
 
 export default createDevTools(
   <DockMonitor toggleVisibilityKey="ctrl-h" changePositionKey="ctrl-q" defaultIsVisible={false}>
     <MultipleMonitors>
       <LogMonitor />
-      <Dispatcher actionCreators={{game: acGame, auth: acAuth}} />
+      <Dispatcher actionCreators={{game: acGame, auth: acAuth, user: acUser}} />
     </MultipleMonitors>
   </DockMonitor>
 );

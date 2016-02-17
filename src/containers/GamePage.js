@@ -26,11 +26,10 @@ function mapStateToProps(state, ownProps) {
   const currentUser = users[auth.user] || {};
 
   // getting game if it exists in entities
-  const rawGame = games[slug];
-  let game = rawGame;
+  let game = games[slug];
   if(game) {
     game = {
-      ...rawGame,
+      ...game,
       technologies: game.technologies.map(slug => technologies[slug]),
     };
   }
@@ -99,7 +98,7 @@ export default class GamePage extends Component {
           style={{borderRadius: '50%', margin: 'auto', lineHeight: '200px', textAlign: 'center'}}
           onDrop={(files) => this.setState({edited: {...this.state.edited, logo: this.props.onDropLogo(files)}})}>
           <p className={overlayStyles.content}>
-            <i className="fa fa-fw fa-camera fa-2x"></i><br/>
+            <span className="fa fa-fw fa-camera fa-2x" /><br/>
             Change logo
           </p>
         </Dropzone>
@@ -113,7 +112,7 @@ export default class GamePage extends Component {
       );
     }
 
-    let title = '', technologiesTmp = '', logo = '';
+    let title = '', logo = '';
     if(game) {
       logo = (
         <div style={{
@@ -130,21 +129,8 @@ export default class GamePage extends Component {
           />
         </div>
       );
-      technologiesTmp = (
-        <EditableTags
-          tags={this.state.edited.technologies || game.technologies}
-          isEditing={isEditing}
-          onChange={(techs) => {
-            const slug = require('slug');
-            const technologies = techs.map((e) => ({name: e, slug: slug(e)}));
-            this.setState({edited: {...this.state.edited, technologies}});
-          }}
-          placeholder="Add technology"
-        />
-      );
     } else {
       title = <h2 style={{color: 'white'}} >Loading...</h2>;
-      technologiesTmp = <p>Loading...</p>;
     }
 
     return (
@@ -180,10 +166,10 @@ export default class GamePage extends Component {
                   <div className="content">
                     <ul className="list">
                       <li>
-                        <a className="type" href="#">
+                        {game ? <Link className="type" to={`/users/${game.owner}`}>
                           <span className="fa fa-user fa-fw"></span>
-                          &nbsp;Owner
-                        </a>
+                          {game.owner}
+                        </Link> : <p>'Loading...'</p>}
                         <div>
                           <Button>Follow</Button>
                         </div>
@@ -204,7 +190,16 @@ export default class GamePage extends Component {
                           Techs
                         </div>
                         <div>
-                          {technologiesTmp}
+                          {game ? <EditableTags
+                            tags={this.state.edited.technologies || game.technologies}
+                            isEditing={isEditing}
+                            onChange={(techs) => {
+                              const slug = require('slug');
+                              const technologies = techs.map((e) => ({name: e, slug: slug(e)}));
+                              this.setState({edited: {...this.state.edited, technologies}});
+                            }}
+                            placeholder="Add technology"
+                          /> : <p>Loading...</p>}
                         </div>
                       </li>
                     </ul>
@@ -226,7 +221,7 @@ export default class GamePage extends Component {
                     <li><Link activeClassName="selected" to={`/games/${this.props.slug}/medias`}>Medias</Link></li>
                     {/*<li><a href="#">Tests</a></li>
                     <li><a href="#">Avis</a></li>
-                    <li><a href="#"><i className="fa fa-fw fa-cog"/></a></li>*/}
+                    <li><a href="#"><span className="fa fa-fw fa-cog"/></a></li>*/}
                   </ul>
                 </nav>
 

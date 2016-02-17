@@ -22,14 +22,14 @@ export default class GameMedia extends Component {
           <img src="http://lorempixel.com/350/200" />
           <img src="http://lorempixel.com/350/200" />
         </div>
-        <Button><i className="fa fa-plus fa-fw"></i>Add Image</Button>
+        <Button><span className="fa fa-plus fa-fw" />Add Image</Button>
         <h3>Videos</h3>
         <div>
           <img src="http://lorempixel.com/350/200" />
           <img src="http://lorempixel.com/350/200" />
           <img src="http://lorempixel.com/350/200" />
         </div>
-        <Button><i className="fa fa-plus fa-fw"></i>Add Video</Button>
+        <Button><span className="fa fa-plus fa-fw" />Add Video</Button>
       </div>
     );
   }

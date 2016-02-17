@@ -11,7 +11,7 @@ export default function load(Component) {
       };
       loader = (
         <div key="loader" style={{background: '#fff', textAlign: 'center', color: '#ddd', margin: 'auto', padding: '5rem 0', zIndex: '2', ...absolute}}>
-          <i className="fa fa-spin fa-refresh fa-3x"></i>
+          <span className="fa fa-spin fa-refresh fa-3x" />
           <p style={{fontSize: '1.5em', paddingTop: '1em'}}>Récupération des informations...</p>
         </div>
       );

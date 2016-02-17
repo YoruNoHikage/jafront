@@ -11,25 +11,25 @@ const ExternalLogin = (props) => (
   <div {...props}>
     <div className="form-group">
       <a href="https://github.com/login/oauth/authorize?client_id=164a33cf96520b3b9c15" role="button" style={{...buttonStyle, backgroundColor: '#F5F5F5', color: '#333', opacity: '1'}}>
-        <i className="fa fa-fw fa-github"></i>
+        <span className="fa fa-fw fa-github"></span>
         Se connecter avec GitHub
       </a>
     </div>
     <div className="form-group">
       <button type="button" style={{...buttonStyle, backgroundColor: '#55ACEE', color: '#fff'}}>
-        <i className="fa fa-fw fa-twitter"></i>
+        <span className="fa fa-fw fa-twitter"></span>
         Se connecter avec Twitter
       </button>
     </div>
     <div className="form-group">
       <a href="#" role="button" style={{...buttonStyle, backgroundColor: '#6441A5', color: '#fff'}}>
-        <i className="fa fa-fw fa-twitch"></i>
+        <span className="fa fa-fw fa-twitch"></span>
         Se connecter avec Twitch
       </a>
     </div>
     <div className="form-group">
       <a href="#" role="button" style={{...buttonStyle, backgroundColor: '#262627', color: '#E6E6E5'}}>
-        <i className="fa fa-fw fa-steam"></i>
+        <span className="fa fa-fw fa-steam"></span>
         Se connecter avec Steam
       </a>
     </div>

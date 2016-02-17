@@ -17,7 +17,7 @@ const StatusInputText = ({status, currentValue, ...rest}) => {
       'fa-warning': status === 'error',
       'fa-refresh fa-spin': status === 'loading',
     });
-    icon = <i className={iconClasses}></i>;
+    icon = <span className={iconClasses} />;
   }
 
   return (

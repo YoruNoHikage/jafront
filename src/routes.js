@@ -44,7 +44,7 @@ export default {
       indexRoute: { component: GameTimeline }, // GameSettings here
     },
     {
-      path: 'user/:username',
+      path: 'users/:username',
       component: UserPage,
     },
     { path: '*', component: NotFoundPage },
