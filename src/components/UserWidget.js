@@ -13,14 +13,25 @@ import MenuItem from "./navigation/MenuItem";
 @connect(({entities, auth}) => entities.users[auth.user])
 export default class UserWidget extends Component {
   render() {
-    const { username } = this.props;
+    const { username, avatar } = this.props;
 
     return (
       <div className="user">
         <Link to={`/users/${username}`}>
-          <Avatar title={username} src="https://secure.gravatar.com/avatar/bf71cb74fc30a417be576c509d8853fc?s=150" />
+          <Avatar title={username} src={avatar} />
         </Link>
-        <IconButton icon="sign-out" onClick={() => this.props.dispatch(logout())} />
+        <IconButton
+          style={{
+            position: 'absolute',
+            bottom: '0px',
+            left: '0px',
+            right: '0px',
+            margin: 'auto',
+            color: 'white',
+          }}
+          icon="power-off"
+          onClick={() => this.props.dispatch(logout())}
+        />
       </div>
     );
   }

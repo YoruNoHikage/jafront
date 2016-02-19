@@ -166,17 +166,20 @@ export default class GamePage extends Component {
                   <div className="content">
                     <ul className="list">
                       <li>
-                        {game ? <Link className="type" to={`/users/${game.owner}`}>
+                        <div className="type">
                           <span className="fa fa-user fa-fw"></span>
+                          Developer
+                        </div>
+                        {game ? <Link className="value" to={`/users/${game.owner}`}>
                           {game.owner}
                         </Link> : <p>'Loading...'</p>}
-                        <div>
+                        {/*<div>
                           <Button>Follow</Button>
-                        </div>
+                        </div>*/}
                       </li>
                       <li>
                         <div className="type">
-                          <span className="fa fa-users fa-fw"></span>
+                          <span className="fa fa-rocket fa-fw"></span>
                           Type
                         </div>
                         <div>
@@ -214,23 +217,26 @@ export default class GamePage extends Component {
 
             <div className="layout__item u-2/3-deskhd u-2/3-desk u-2/3-lap">
               <div style={{padding: '0.5em 0'}}>
-                <nav>
+                {/*<nav>
                   <ul className="tabs">
-                    <li><IndexLink activeClassName="selected" to={`/games/${this.props.slug}`}>Résumé</IndexLink></li>
+                    }<li><IndexLink activeClassName="selected" to={`/games/${this.props.slug}`}>Résumé</IndexLink></li>
                     <li><Link activeClassName="selected" to={`/games/${this.props.slug}/news`}>News</Link></li>
                     <li><Link activeClassName="selected" to={`/games/${this.props.slug}/medias`}>Medias</Link></li>
-                    {/*<li><a href="#">Tests</a></li>
+                    <li><a href="#">Tests</a></li>
                     <li><a href="#">Avis</a></li>
-                    <li><a href="#"><span className="fa fa-fw fa-cog"/></a></li>*/}
+                    <li><a href="#"><span className="fa fa-fw fa-cog"/></a></li>
                   </ul>
-                </nav>
+                </nav>*/}
 
-                <div className="panel" style={{borderRadius: '0px 3px 3px 3px'}}>
-                  <p>Todo List :</p>
-                  <ul>
-                    <li>Medias : Any member can add media</li>
-                  </ul>
-                  {this.props.children}
+                <div className="panel" style={{borderRadius: '3px'}}>{/*0 3px 3px 3px*/}
+                  {React.cloneElement(this.props.children, {
+                    game,
+                    isLoading,
+                    isEditing,
+                    onEdit: (newSubState) => this.setState({
+                      edited: {...this.state.edited, ...newSubState}
+                    })
+                  })}
                 </div>
               </div>
             </div>

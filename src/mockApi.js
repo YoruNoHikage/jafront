@@ -19,6 +19,8 @@ function authResponse(url, opts) {
   return {
     status: username ? 200 : 400,
     body: {
+      id: token || 'Basic ' + btoa(`${username}:${password}`), // loopback token
+      userId: 0,
       username,
       email,
       token: token || 'Basic ' + btoa(`${username}:${password}`), // tmp
@@ -32,6 +34,7 @@ function authResponse(url, opts) {
 
 fetchMock.mock(buildUrl('register'), 'POST', authResponse);
 fetchMock.mock(buildUrl('login'), 'POST', authResponse);
+fetchMock.mock(buildUrl('users/login'), 'POST', authResponse);
 fetchMock.mock(buildUrl('oauth'), 'POST', authResponse);
 
 // Games
@@ -81,7 +84,7 @@ fetchMock.mock(buildUrl(/games\/(.+)/), 'PUT', (url, opts) => {
     slug,
     description: '',
     logo: `http://lorempixel.com/200/200?${slugify(name)}`,
-    owner: users[0],
+    owner: usersFixtures[0],
     technologies: [],
     watchers: [],
     ...game,
@@ -94,7 +97,7 @@ fetchMock.mock(buildUrl(/games\/(.+)/), 'PUT', (url, opts) => {
     gamesFixtures.push(finalGame);
   }
 
-  return existingGame;
+  return finalGame;
 });
 
 // Users

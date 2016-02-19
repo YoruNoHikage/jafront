@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import Timeline from "../components/Timeline";
-import Entry from "../components/Entry";
+import Markdown from 'react-remarkable';
+import Timeline from '../components/Timeline';
+import Entry from '../components/Entry';
+import Well from '../components/Well';
 import ButtonLink from '../components/ButtonLink';
 
-function mapStateToProps(state) {
-  return {
-    isLoading: state.games.games.loadingItem,
-  };
-}
-
-@connect(mapStateToProps)
 export default class GameTimeline extends Component {
+  onChangeAbout(e) {
+    this.props.onEdit({
+      about: e.target.value,
+    });
+  }
+
   render() {
-    const { isLoading } = this.props;
+    const { game, isLoading, isEditing } = this.props;
 
     const tmpTimeline = [{
       icon: 'https://secure.gravatar.com/avatar/bf71cb74fc30a417be576c509d8853fc?s=50',
@@ -59,10 +60,42 @@ export default class GameTimeline extends Component {
       );
     });
 
+    // return (
+    //   <Timeline isLoading={isLoading}>
+    //     {timeline}
+    //   </Timeline>
+    // );
+
+    if(isLoading) {
+      return <p>Loading...</p>;
+    }
+
+    if(isEditing) {
+      return (
+        <div>
+          <h3 style={{paddingBottom: '1rem', textDecoration: 'underline'}}>About the game</h3>
+          <textarea
+            onChange={this.onChangeAbout.bind(this)}
+            defaultValue={game.about}
+            className="form-input"
+            placeholder='Tell everything you want about your game, you can use Markdown here.'>
+          </textarea>
+        </div>
+      );
+    }
+
     return (
-      <Timeline isLoading={isLoading}>
-        {timeline}
-      </Timeline>
+      <div>
+        <h3 style={{paddingBottom: '1rem', textDecoration: 'underline'}}>About the game</h3>
+        {game.about ?
+          <Markdown source={game.about} />
+          :
+          <Well>
+            It appears that this game has no about filled, that's sad :(<br/>
+            <ButtonLink to={`/games/${game.slug}/edit`}>Contribute!</ButtonLink>
+          </Well>
+        }
+      </div>
     );
   }
 }

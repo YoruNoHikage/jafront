@@ -2,6 +2,17 @@ import { FAVORITE_GAME_SUCCESS } from '../../actions/game';
 
 export const initialState = {};
 
+// function followUserReducer(state = [], action) {
+//   if(action.type === 'FOLLOW_USER_SUCCESS') {
+//     if(action.request.method === 'DELETE') {
+//       return state.filter(e => e != action.request.method);
+//     }
+//     return [new Set([...state, action.request.])];
+//   }
+//
+//   return state;
+// }
+
 export default function users(state = {}, action) {
   switch(action.type) {
     case FAVORITE_GAME_SUCCESS:
@@ -16,8 +27,13 @@ export default function users(state = {}, action) {
             ...state[username],
             watchedGames,
           }
-        }
+        };
       }
+    // case 'FOLLOW_USER_SUCCESS':
+    //   return {
+    //     ...state,
+    //     [username]: followUserReducer(state[username].followers, action),
+    //   };
     default:
       return state;
   }

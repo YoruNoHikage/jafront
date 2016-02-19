@@ -150,14 +150,14 @@ export default class HomePage extends Component {
               <h3>Vous êtes un joueur avec de bonnes idées ?</h3>
               <p>Rejoignez la communauté et proposez vos idées pour améliorer les jeux qui vous font plaisir et aidez-les à progresser !</p>
             </div>
-          </div> : ''}
+          </div> : null}
 
           <div style={{display: 'flex'}}>
 
-            {this.props.isAuthenticated ? <div style={{flex: '1'}}>
+            {/*this.props.isAuthenticated ? <div style={{flex: '1'}}>
               <h2>Feed</h2>
               <Timeline>{timeline}</Timeline>
-            </div> : null}
+            </div> : null*/}
 
             <div style={{flex: '1'}}>
               <h2>Les derniers jeux ajoutés</h2>

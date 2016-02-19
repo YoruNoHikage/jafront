@@ -3,6 +3,7 @@ const games = [{ // small subset of games
   "slug": "awesome-game",
   "logo": "http://lorempixel.com/200/200?awesome-game",
   "description": "This is my super duper game about cookies",
+  "about": "Awesome Game : *Deep in your mind*\nThink of it like a huge trick !\n\n![Some picture](https://pbs.twimg.com/profile_images/559360371593465857/TW4FQVeq.jpeg)",
   "owner": {
     "id": 0,
     "username": "YoruNoHikage",

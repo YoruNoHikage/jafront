@@ -17,15 +17,15 @@ const GameCard = ({ game }) => (
     <div className="content">
       {game.description}
     </div>
-    <div style={{display: 'flex', alignItems: 'center'}}>
+    <div style={{display: 'flex', alignItems: 'center', textAlign: 'center'}}>
       <Link style={{flex: '1'}} to={`/users/${game.owner}`}>
         <span className="fa fa-fw fa-user"></span>
         {game.owner}
       </Link>
-      <Button>
+      {/*<Button>
         <span className="fa fa-fw fa-user-plus"></span>
         Follow
-      </Button>
+      </Button>*/}
     </div>
   </Card>
 );

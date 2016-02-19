@@ -57,15 +57,10 @@ export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 export function requestLogin(username, password) {
   return {
-    [CALL_API]: {
-      method: 'POST',
-      endpoint: `login`,
-      types: [LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE],
-      schema: Schemas.USER,
-      payload: {
-        username,
-        password,
-      }
+    type: LOGIN_REQUEST,
+    payload: {
+      username,
+      password,
     }
   };
 }
