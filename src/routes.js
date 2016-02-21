@@ -15,6 +15,7 @@ import Register from './containers/Register';
 import Login from './containers/Login';
 import GitHubLogPage from './containers/GitHubLogPage';
 
+import UsersPage from './containers/UsersPage';
 import UserPage from './containers/UserPage';
 
 import requireAuthentication from './components/AuthenticatedComponent';
@@ -43,6 +44,7 @@ export default {
       path: 'games/:slug/edit', component: requireAuthentication(EditGamePage),
       indexRoute: { component: GameTimeline }, // GameSettings here
     },
+    { path: 'users', component: UsersPage },
     {
       path: 'users/:username',
       component: UserPage,

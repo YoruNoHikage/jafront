@@ -38,6 +38,7 @@ export default class Navigation extends Component {
 
         <Menu>
           <MenuItem icon="gamepad" to="/games">Games</MenuItem>
+          <MenuItem icon="users" to="/users">Users</MenuItem>
           {/*<MenuItem icon="newspaper-o">News</MenuItem>
           <MenuItem icon="bullhorn">Tests</MenuItem>
           <MenuItem icon="play-circle">Vidéos</MenuItem>

@@ -115,12 +115,10 @@ export default class GamePage extends Component {
     let title = '', logo = '';
     if(game) {
       logo = (
-        <div style={{
-          background: `url(${this.state.edited.logo || game.logo}) no-repeat center center / cover`,
-          width: '200px', height: '200px',
-          borderRadius: '50%',
-          border: '.188em solid #fff'
-        }}></div>
+        <img
+          src={this.state.edited.logo || game.logo}
+          style={{objectFit: 'cover', width: '200px', height: '200px', display:'block', borderRadius: '50%', border: '.188em solid #fff'}}
+        />
       );
       title = (
         <div style={{flex: '1'}}>

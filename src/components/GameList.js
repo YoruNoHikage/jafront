@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 import load from './load';
 
@@ -19,19 +19,19 @@ const GameList = ({ games }) => {
         </ul>
       </div>
     );
-  } else {
-    return (
-      <div>
-        <Well>
-          <p>
-            Aucun jeu pour le moment.<br/>
-            Ajoutez le vôtre rapidement !<br/>
-            <ButtonLink to='/games/new'><span className="fa fa-fw fa-plus" />Ajouter votre jeu</ButtonLink>
-          </p>
-        </Well>
-      </div>
-    );
   }
+  
+  return (
+    <div>
+      <Well>
+        <p>
+          Aucun jeu pour le moment.<br/>
+          Ajoutez le vôtre rapidement !<br/>
+          <ButtonLink to='/games/new'><span className="fa fa-fw fa-plus" />Ajouter votre jeu</ButtonLink>
+        </p>
+      </Well>
+    </div>
+  );
 };
 
 export default load(GameList);

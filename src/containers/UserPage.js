@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { Link } from 'react-router';
+import Well from '../components/Well';
 import Card from '../components/Card';
 import IconButton from '../components/IconButton';
 import Button from '../components/Button';
@@ -28,10 +30,8 @@ function mapStateToProps(state, ownProps) {
     username,
     user,
     isCurrentUser: user.username === currentUser.username,
-    followedByUser: user.followers.indexOf(currentUser.username) > -1,
-    followingUser: user.following.indexOf(currentUser.username) > -1,
-    // favoritedByUser: game && currentUser ? game.watchers.includes(currentUser.username) : false,
-    // isLoading: state.games.games.loadingItem,
+    // followedByUser: user.followers.indexOf(currentUser.username) > -1,
+    // followingUser: user.following.indexOf(currentUser.username) > -1,
   };
 }
 
@@ -43,16 +43,34 @@ export default class UserPage extends Component {
       return (<div>Loading...</div>);
     }
 
-    const badgeStyle = {
-      color: 'white',
-      background: 'rgba(0,0,0,0.25)',
-      margin: '5px',
-      padding: '2px 5px',
-      borderRadius: '5px',
-      textTransform: 'uppercase',
-      fontSize: '.8rem',
-      fontWeight: '600',
-    };
+    let games = user.games.map((game) => (
+      <li className='layout__item u-1/3-deskhd u-1/2-desk' key={game.slug}>
+        <Card>
+          <div className="header">
+            <h3>
+              <Link to={`/games/${game.slug}`}>
+                <img src={game.logo} />
+                <span>{game.name}</span>
+              </Link>
+            </h3>
+          </div>
+          <div className="content" style={{margin: 0, paddingBottom: 0}}>
+            {game.description}
+          </div>
+        </Card>
+      </li>
+    ));
+
+    // const badgeStyle = {
+    //   color: 'white',
+    //   background: 'rgba(0,0,0,0.25)',
+    //   margin: '5px',
+    //   padding: '2px 5px',
+    //   borderRadius: '5px',
+    //   textTransform: 'uppercase',
+    //   fontSize: '.8rem',
+    //   fontWeight: '600',
+    // };
 
     return (
       <div>
@@ -63,7 +81,7 @@ export default class UserPage extends Component {
                 <div style={{display: 'flex', alignItems: 'center'}}>
                   <div style={{flex: '1', display: 'flex', alignItems: 'center'}}>
                     <h2 style={{color: 'white'}}>{user.username}</h2>
-                    {followingUser ? <span style={badgeStyle}>Follows you</span> : null}
+                    {/*followingUser ? <span style={badgeStyle}>Follows you</span> : null*/}
                   </div>
                 </div>
               </div>
@@ -104,27 +122,31 @@ export default class UserPage extends Component {
                           />
                         </div>
                       </li>
+                      <li>
+                        <div className="type">
+                          <span className="fa fa-fw fa-map-marker"></span>
+                          Location
+                        </div>
+                        <div>{user.location}</div>
+                      </li>
                     </ul>
                   </div>
 
-                  <div style={{textAlign: 'center'}}>
+                  {/*<div style={{textAlign: 'center'}}>
                     <IconButton icon="eye" iconActive="eye-slash" size="large" active={followedByUser} />
-                  </div>
+                  </div>*/}
                 </Card>
               </aside>
             </div>
 
             <div className="layout__item u-2/3-deskhd u-2/3-desk u-2/3-lap">
-              <ul>
-                  <li><b>Name :</b> {user.name}</li>
-                  <li><b>Games :</b> {user.games.map((game) => <span>{game.name}</span>)}</li>
-                  <li><b>Favorites &/o owned games :</b> {user.watchedGames.map((game) => <span>{game.name}</span>)}</li>
-                  <li><b>Contributions ?</b></li>
-                  <li><b>User's activity :</b></li>
-                  <li><b>Is current user following him ?</b> {followedByUser ? 'yes' : 'no'}</li>
-                  <li><b>Is user following current user ?</b> {followingUser ? 'yes' : 'no'}</li>
-                  <li><b>Is this current user ? Edit profile</b> {isCurrentUser ? 'yes' : 'no'}</li>
-              </ul>
+              {games.length > 0 ?
+                <ul className='layout layout--small' style={{padding: '0.5em 0'}}>
+                  {games}
+                </ul>
+                :
+                <Well>{user.username} didn't publish any game for now.</Well>
+              }
             </div>
 
           </div>
