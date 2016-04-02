@@ -20,11 +20,11 @@ module.exports = {
         'NODE_ENV': JSON.stringify('production')
       }
     }),
-    // new webpack.optimize.UglifyJsPlugin({
-    //   compressor: {
-    //     warnings: false
-    //   }
-    // }),
+    new webpack.optimize.UglifyJsPlugin({
+      compressor: {
+        warnings: false
+      }
+    }),
     new ExtractTextPlugin('styles.css', { allChunks: true }),
   ],
   resolve: {
@@ -35,6 +35,9 @@ module.exports = {
       test: /\.jsx?$/,
       loaders: ['babel'],
       include: path.join(__dirname, 'src')
+    },{
+      test: /\.json$/,
+      loader: 'json'
     },{
       test: /\.scss$/,
       loader: ExtractTextPlugin.extract('style-loader', 'css?sourceMap!sass?sourceMap'),

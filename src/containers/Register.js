@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { routeActions } from 'react-router-redux';
+import history from '../history';
 
 import { requestRegistration } from '../actions/auth';
 
@@ -19,7 +19,7 @@ export default class Register extends Component {
 
   checkAuth({ isAuthenticated, location, dispatch }) {
     if(isAuthenticated) {
-      dispatch(routeActions.replace(location.query.returnTo || '/'));
+      history.replace(location.query.returnTo || '/');
     }
   }
 

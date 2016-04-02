@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { routeActions } from 'react-router-redux';
+import history from '../history';
 
 import GamePage from './GamePage';
 
@@ -18,9 +18,15 @@ function onDropLogo(files) {
   return logo;
 }
 
-function mapStateToProps(state) {
-  const { edited, isLoading, slug } = state.games.edit;
+const isAuthorSelector = (game, user) => game && user ? game.owner === user.username : false;
+
+function mapStateToProps(state, ownProps) {
+  const { edited, isLoading, slug = ownProps.params.slug } = state.games.edit;
+  const game = state.entities.games[slug];
+  const currentUser = state.entities.users[state.auth.user] || {};
   return {
+    game,
+    isAuthor: isAuthorSelector(game, currentUser),
     edited,
     isLoading,
     slug,
@@ -29,9 +35,9 @@ function mapStateToProps(state) {
 
 @connect(mapStateToProps)
 export default class EditGamePage extends Component {
-  componentWillReceiveProps({ edited, slug, dispatch }) {
-    if(edited) {
-      dispatch(routeActions.push(`/games/${slug}`));
+  componentWillReceiveProps({ game, isAuthor, edited, slug, dispatch }) {
+    if(edited || !isAuthor) {
+      history.push(`/games/${slug}`);
     }
   }
 

@@ -15,7 +15,7 @@ export default class GameTimeline extends Component {
   }
 
   render() {
-    const { game, isLoading, isEditing } = this.props;
+    const { game, isLoading, isEditing, isAuthor } = this.props;
 
     const tmpTimeline = [{
       icon: 'https://secure.gravatar.com/avatar/bf71cb74fc30a417be576c509d8853fc?s=50',
@@ -70,7 +70,7 @@ export default class GameTimeline extends Component {
       return <p>Loading...</p>;
     }
 
-    if(isEditing) {
+    if(isEditing && game) {
       return (
         <div>
           <h3 style={{paddingBottom: '1rem', textDecoration: 'underline'}}>About the game</h3>
@@ -92,7 +92,7 @@ export default class GameTimeline extends Component {
           :
           <Well>
             It appears that this game has no about filled, that's sad :(<br/>
-            <ButtonLink to={`/games/${game.slug}/edit`}>Contribute!</ButtonLink>
+            {isAuthor ? <ButtonLink to={`/games/${game.slug}/edit`}>Contribute!</ButtonLink> : null}
           </Well>
         }
       </div>

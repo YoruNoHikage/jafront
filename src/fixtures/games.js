@@ -1,5 +1,3 @@
-import { yoruNoHikageSubset, jeanMichelSubset } from './users';
-
 export const awesomeGameSubset = {
   "name": "Awesome game",
   "slug": "awesome-game",
@@ -17,6 +15,8 @@ export const testSubset = {
   "owner": "Jean-Michel", // TODO: change for id
   "watchers": ["YoruNoHikage"]
 };
+
+const { yoruNoHikageSubset, jeanMichelSubset } = require('./users');
 
 const games = [{
   ...awesomeGameSubset,

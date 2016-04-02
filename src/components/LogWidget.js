@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { routeActions } from 'react-router-redux';
 
 import { requestRegistration, requestLogin } from '../actions/auth';
 
@@ -14,13 +13,19 @@ import RegisterForm from './RegisterForm';
 
 import styles from '../../css/logbox.css';
 
-@connect(({ routing }) => ({path: routing.location.pathname}))
+function mapStateToProps({ routing }) {
+  return {
+    path: routing.locationBeforeTransitions.pathname, // TODO: change this to use React Router with context
+  };
+}
+
+@connect(mapStateToProps)
 export default class LogWidget extends Component {
   render() {
-    const returnTo = (this.props.path !== '/' || this.props.path !== '/login' || this.props.path !== '/register') ? this.props.path : '';
+    const returnTo = (this.props.path !== '/' && this.props.path !== '/login' && this.props.path !== '/register') ? this.props.path : '';
     const createModalTo = (pathname) => ({
       pathname,
-      search: `?returnTo=${returnTo}`,
+      search: returnTo ? `?returnTo=${returnTo}` : null,
       state: {modal: true},
     });
 

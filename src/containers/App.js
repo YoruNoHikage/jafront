@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { routeActions } from 'react-router-redux';
+import history from '../history';
 
 import Navigation from '../components/Navigation';
 import Modal from '../components/Modal';
@@ -41,7 +41,7 @@ export default class App extends Component {
             }
 
             {isModal && (
-              <Modal isOpen={true} onRequestClose={() => this.props.dispatch(routeActions.push(location.query.returnTo || '/'))}>
+              <Modal isOpen={true} onRequestClose={() => history.push(location.query.returnTo || '/')}>
                 {this.props.children}
               </Modal>
             )}

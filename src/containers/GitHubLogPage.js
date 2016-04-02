@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { routeActions } from 'react-router-redux';
+import history from '../history';
 
 import { checkUsername, requestAuthGitHub } from '../actions/auth';
 
@@ -25,7 +25,7 @@ export default class GitHubLogPage extends Component {
 
   componentWillReceiveProps({ user, username, location, dispatch }) {
     if(user && user.username) {
-      dispatch(routeActions.push(location.query.redirect || '/'));
+      history.push(location.query.redirect || '/');
     }
   }
 

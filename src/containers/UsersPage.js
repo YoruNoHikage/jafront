@@ -7,15 +7,12 @@ import { Link } from 'react-router';
 import ButtonLink from '../components/ButtonLink';
 import Well from '../components/Well';
 
-function mapStateToProps(state) {
-  const users = [];
-  for(var i in state.entities.users) {
-    users.push(state.entities.users[i]);
-  }
-  //users.sort(); by registration date
+const usersSelector = (state) => Object.values(state.entities.users);
 
+function mapStateToProps(state) {
+  //users.sort(); by registration date
   return {
-    users,
+    users: usersSelector(state),
     // isLoading: !!state.games.games.loadingList,
   };
 }

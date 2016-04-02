@@ -1,17 +1,17 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
-import { Router, browserHistory } from 'react-router';
+import { Router } from 'react-router';
+import history from './history';
+import { syncHistoryWithStore } from 'react-router-redux';
 import { canUseDOM } from 'exenv';
 import cookie from 'cookie';
 
 import test from '../scss/screen.scss';
 import fa from 'style!css!font-awesome/css/font-awesome.css';
 
-import configureStore, { reduxRouterMiddleware } from './store/configureStore';
+import configureStore from './store/configureStore';
 import routes from './routes';
-
-import DevTools from './DevTools'; // TODO: move to another filer
 
 let localCookie, initialState = {};
 if(canUseDOM) {
@@ -34,14 +34,19 @@ if(localCookie && localCookie.token) {
   };
 }
 
+let DevTools = null;
+if(process.env.NODE_ENV !== 'production') {
+  DevTools = require('./DevTools').default;
+}
+
 const store = configureStore(initialState);
-reduxRouterMiddleware.listenForReplays(store);
+syncHistoryWithStore(history, store);
 
 render(
   <Provider store={store}>
     <div>
-      <Router routes={routes} history={browserHistory} />
-      <DevTools />
+      <Router routes={routes} history={history} />
+      {DevTools && <DevTools />}
     </div>
   </Provider>,
   document.getElementById('app')

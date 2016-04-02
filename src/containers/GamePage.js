@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { routeActions } from 'react-router-redux';
+import history from '../history';
 import cx from 'classnames';
+
+import { denormalize } from 'denormalizr';
+import { Schema, arrayOf } from 'normalizr';
 
 import { loadGame, editGame, favoriteGame } from '../actions/game';
 
@@ -16,8 +19,26 @@ import EditableTitle from '../components/EditableTitle';
 import Overlay from '../components/Overlay';
 import Logo from '../components/Logo';
 import Card from '../components/Card';
+import Cover from '../components/Cover';
 
 import objFilter from '../utils/obj-filter.js';
+
+const gameSelector = (state, slug) => {
+  const game = state.entities.games[slug];
+  if(!game) { return null; }
+  // TMP
+  const gamesSchema = new Schema('games');
+  gamesSchema.define({
+    owner: new Schema('users'),
+    watchers: arrayOf(new Schema('users')),
+    technologies: arrayOf(new Schema('technologies')),
+  });
+  // TMP
+  return denormalize(state.entities.games[slug], state.entities, gamesSchema);
+};
+const isAuthorSelector = (game, user) => game && user ? game.owner.username === user.username : false;
+const favoritedByUserSelector = (game, user) => game && user ? game.watchers.includes(user.username) : false;
+const isLoadingSelector = (state) => state.games.games.loadingItem;
 
 function mapStateToProps(state, ownProps) {
   const { auth, entities } = state;
@@ -25,20 +46,13 @@ function mapStateToProps(state, ownProps) {
   const { games, technologies, users } = entities;
   const currentUser = users[auth.user] || {};
 
-  // getting game if it exists in entities
-  let game = games[slug];
-  if(game) {
-    game = {
-      ...game,
-      technologies: game.technologies.map(slug => technologies[slug]),
-    };
-  }
-
+  const game = gameSelector(state, slug);
   return {
     slug,
     game,
-    favoritedByUser: game && currentUser ? game.watchers.includes(currentUser.username) : false,
-    isLoading: state.games.games.loadingItem,
+    isAuthor: isAuthorSelector(game, currentUser),
+    favoritedByUser: favoritedByUserSelector(game, currentUser),
+    isLoading: isLoadingSelector(state),
   };
 }
 
@@ -79,7 +93,7 @@ export default class GamePage extends Component {
   }
 
   render() {
-    const { game, isLoading, isEditing, favoritedByUser } = this.props;
+    const { game, isLoading, isEditing, isAuthor, favoritedByUser } = this.props;
 
     // elements that can be modified by state
     let actions = '', dropzone = '';
@@ -87,27 +101,14 @@ export default class GamePage extends Component {
       actions = (
         <div style={{paddingLeft: '10px'}}>
           <IconButton icon="check" onClick={this.validateEditGame.bind(this)} />
-          <IconButton icon="remove" onClick={() => {this.props.dispatch(routeActions.push(`/games/${game.slug}`));}} />
+          <IconButton icon="remove" onClick={() => {history.push(`/games/${game.slug}`);}} />
         </div>
       );
-      dropzone = (
-        <Dropzone
-          multiple={false}
-          className={cx(overlayStyles.default, {[overlayStyles.dropped]: this.state.edited.logo})}
-          activeClassName={overlayStyles.onDrop}
-          style={{borderRadius: '50%', margin: 'auto', lineHeight: '200px', textAlign: 'center'}}
-          onDrop={(files) => this.setState({edited: {...this.state.edited, logo: this.props.onDropLogo(files)}})}>
-          <p className={overlayStyles.content}>
-            <span className="fa fa-fw fa-camera fa-2x" /><br/>
-            Change logo
-          </p>
-        </Dropzone>
-      );
-    } else if(game) {
+    } else if(game && isAuthor) {
       // TODO: Replace with <Link/> inside the IconButton component, verify for external links
       actions = (
         <div style={{paddingLeft: '10px'}}>
-          <IconButton icon="pencil" onClick={() => {this.props.dispatch(routeActions.push(`/games/${game.slug}/edit`));}} />
+          <IconButton icon="pencil" onClick={() => {history.push(`/games/${game.slug}/edit`);}} />
         </div>
       );
     }
@@ -131,10 +132,35 @@ export default class GamePage extends Component {
       title = <h2 style={{color: 'white'}} >Loading...</h2>;
     }
 
+    const renderLogo = (logo) => (
+      <div style={{padding: '0.5em'}}>
+        <div style={{margin: 'auto', position: 'relative', width: '200px', height: '200px'}}>
+          {logo}
+        </div>
+      </div>
+    );
+
+    const renderLogoEdition = (logo) => renderLogo(
+      <div>
+        {logo}
+        <Dropzone
+          multiple={false}
+          className={cx(overlayStyles.default, {[overlayStyles.dropped]: this.state.edited.logo})}
+          activeClassName={overlayStyles.onDrop}
+          style={{borderRadius: '50%', margin: 'auto', lineHeight: '200px', textAlign: 'center'}}
+          onDrop={(files) => this.setState({edited: {...this.state.edited, logo: this.props.onDropLogo(files)}})}>
+          <p className={overlayStyles.content}>
+            <span className="fa fa-fw fa-camera fa-2x" /><br/>
+            Change logo
+          </p>
+        </Dropzone>
+      </div>
+    );
+
     return (
       <div>
 
-        <header style={{background: '#2c2c2c'}}>
+        <Cover src={game.cover}>
           <div className="container">
             <div className="layout layout--bottom">
               <div className="layout__item u-2/3-deskhd u-2/3-desk u-2/3-lap">
@@ -144,16 +170,17 @@ export default class GamePage extends Component {
                 </div>
               </div>
               <div className="layout__item u-1/3-deskhd u-1/3-desk u-1/3-lap">
-                <div style={{padding: '0.5em'}}>
-                  <div style={{margin: 'auto', position: 'relative', width: '200px', height: '200px'}}>
-                    {logo}
-                    {dropzone}
+                {!isLoading ?
+                  (isEditing ? renderLogoEdition(logo) : renderLogo(logo))
+                  :
+                  <div style={{textAlign: 'center', margin: '20px 0px', padding: '15px 0px', color: '#ddd'}}>
+                    <span className="fa fa-spin fa-refresh fa-3x" />
                   </div>
-                </div>
+                }
               </div>
             </div>
           </div>
-        </header>
+        </Cover>
 
         <div className="container">
           <div className="layout layout--rev">
@@ -168,9 +195,10 @@ export default class GamePage extends Component {
                           <span className="fa fa-user fa-fw"></span>
                           Developer
                         </div>
-                        {game ? <Link className="value" to={`/users/${game.owner}`}>
-                          {game.owner}
-                        </Link> : <p>'Loading...'</p>}
+                        {game ? <Link className="value" to={`/users/${game.owner.username}`}>
+                          <img src={game.owner.avatar} alt="" style={{height: '2rem', width: 'auto', display: 'inline', verticalAlign: 'middle', borderRadius: '50%', paddingRight: '5px'}} />
+                          {game.owner.username}
+                        </Link> : <p>Loading...</p>}
                         {/*<div>
                           <Button>Follow</Button>
                         </div>*/}
@@ -200,7 +228,9 @@ export default class GamePage extends Component {
                               this.setState({edited: {...this.state.edited, technologies}});
                             }}
                             placeholder="Add technology"
-                          /> : <p>Loading...</p>}
+                          />
+                          :
+                          <p>Loading...</p>}
                         </div>
                       </li>
                     </ul>
@@ -229,6 +259,8 @@ export default class GamePage extends Component {
                 <div className="panel" style={{borderRadius: '3px'}}>{/*0 3px 3px 3px*/}
                   {React.cloneElement(this.props.children, {
                     game,
+                    ...this.state.edited, // rewrite properties that has changed
+                    isAuthor,
                     isLoading,
                     isEditing,
                     onEdit: (newSubState) => this.setState({

@@ -1,11 +1,12 @@
 import fetchMock from 'fetch-mock';
 import slugify from 'slug';
+import config from '../config';
 
 import usersFixtures from './fixtures/users';
 import gamesFixtures from './fixtures/games';
 import technologiesFixtures from './fixtures/technologies';
 
-const API_ROOT = 'http://localhost:3000/api/';
+const API_ROOT = config.api;
 
 function buildUrl(endpoint) {
   endpoint = endpoint.source || endpoint;
@@ -24,6 +25,7 @@ function authResponse(url, opts) {
       username,
       email,
       token: token || 'Basic ' + btoa(`${username}:${password}`), // tmp
+      technologies: [],
       games: [],
       watched_games: [],
       following: [],

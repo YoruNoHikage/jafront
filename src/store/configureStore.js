@@ -1,6 +1,5 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { browserHistory } from 'react-router';
-import { syncHistory } from 'react-router-redux';
 import thunk from 'redux-thunk';
 import createSagaMiddleware from 'redux-saga';
 import createLogger from 'redux-logger';
@@ -19,8 +18,7 @@ function getDebugSessionKey() {
   return (matches && matches.length > 0)? matches[1] : null;
 }
 
-export const reduxRouterMiddleware = syncHistory(browserHistory);
-const middlewares = [thunk, api, cookie, reduxRouterMiddleware, createSagaMiddleware(rootSaga)];
+const middlewares = [thunk, api, cookie, createSagaMiddleware(rootSaga)];
 if(process.env.NODE_ENV !== 'production') {
   middlewares.push(createLogger({
     collapsed: true,

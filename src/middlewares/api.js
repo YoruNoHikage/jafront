@@ -1,6 +1,8 @@
 import { Schema, arrayOf, normalize } from 'normalizr';
 import { camelizeKeys } from 'humps';
-import '../mockApi';
+import config from '../../config';
+
+config.mocks && require('../mockApi');
 
 const userSchema = new Schema('users', {
   idAttribute: 'username',
@@ -45,7 +47,7 @@ export const Schemas = {
 
 export const CALL_API = 'JA_API_CALL';
 
-export const API_ROOT = 'http://localhost:3000/api/';
+export const API_ROOT = config.api;
 
 async function callApi(method = 'GET', endpoint, payload, schema) {
   const fullUrl = (endpoint.indexOf(API_ROOT) === -1) ? API_ROOT + endpoint : endpoint;

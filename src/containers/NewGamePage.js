@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import { routeActions } from 'react-router-redux';
+import history from '../history';
 import revalidator from 'revalidator';
 
 import { newGame, resetNewGame } from '../actions/game';
@@ -85,7 +85,7 @@ export default class NewGamePage extends Component {
   componentWillReceiveProps({ game, isLoading, dispatch }) {
     if(game.slug) {
       dispatch(resetNewGame());
-      dispatch(routeActions.push(`/games/${game.slug}`));
+      history.push(`/games/${game.slug}`);
     }
   }
 

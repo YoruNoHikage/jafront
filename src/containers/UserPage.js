@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { requestUser as loadUser } from '../actions/user';
+
+import responsiveImgStyles from '../../css/responsive-img.css';
+
 import { Link } from 'react-router';
 import Well from '../components/Well';
 import Card from '../components/Card';
 import IconButton from '../components/IconButton';
 import Button from '../components/Button';
 import EditableTags from '../components/EditableTags';
+import Cover from '../components/Cover';
 
 function mapStateToProps(state, ownProps) {
   const { auth, entities } = state;
@@ -19,10 +24,9 @@ function mapStateToProps(state, ownProps) {
   if(user) {
     user = {
       ...user,
-      technologies: user.technologies.map(slug => technologies[slug]),
-      games: user.games.map(name => games[name]),
-      watchedGames: user.watchedGames.map(name => games[name]),
-      technologies: user.technologies.map(name => technologies[name]),
+      technologies: user.technologies ? user.technologies.map(name => technologies[name]) : [],
+      games: user.games ? user.games.map(name => games[name]) : [],
+      watchedGames: user.watchedGames ? user.watchedGames.map(name => games[name]) : [],
     };
   }
 
@@ -37,6 +41,10 @@ function mapStateToProps(state, ownProps) {
 
 @connect(mapStateToProps)
 export default class UserPage extends Component {
+  componentWillMount() {
+    this.props.dispatch(loadUser(this.props.username));
+  }
+
   render() {
     const { user, isCurrentUser, followedByUser, followingUser } = this.props;
     if(!user) {
@@ -47,9 +55,9 @@ export default class UserPage extends Component {
       <li className='layout__item u-1/3-deskhd u-1/2-desk' key={game.slug}>
         <Card>
           <div className="header">
-            <h3>
-              <Link to={`/games/${game.slug}`}>
-                <img src={game.logo} />
+            <h3 className={responsiveImgStyles.parent}>
+              <Link to={`/games/${game.slug}`} className={responsiveImgStyles.child}>
+                <img src={game.logo} style={{height: '100%', objectFit: 'cover'}} />
                 <span>{game.name}</span>
               </Link>
             </h3>
@@ -74,7 +82,7 @@ export default class UserPage extends Component {
 
     return (
       <div>
-        <header style={{background: '#2c2c2c'}}>
+        <Cover src={user ? user.cover : ''}>
           <div className="container">
             <div className="layout layout--bottom">
               <div className="layout__item u-2/3-deskhd u-2/3-desk u-2/3-lap">
@@ -93,13 +101,13 @@ export default class UserPage extends Component {
                       width: '200px', height: '200px',
                       borderRadius: '50%',
                       border: '.188em solid #fff'
-                    }}></div>
+                    }} />
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </header>
+        </Cover>
 
         <div className="container">
           <div className="layout layout--rev">
@@ -145,7 +153,12 @@ export default class UserPage extends Component {
                   {games}
                 </ul>
                 :
-                <Well>{user.username} didn't publish any game for now.</Well>
+                <div className="panel" style={{margin: '.5em 0'}}>
+                  <Well>
+                    <span style={{color: '#ccc', display: 'block'}} className="fa fa-frown-o fa-5x" />
+                    {user.username} didn't publish any game for now.
+                  </Well>
+                </div>
               }
             </div>
 

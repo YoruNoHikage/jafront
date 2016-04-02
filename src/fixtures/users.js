@@ -1,5 +1,3 @@
-import { awesomeGameSubset, testSubset } from './games';
-
 export const yoruNoHikageSubset = {
   "id": 0,
   "username": "YoruNoHikage",
@@ -20,13 +18,15 @@ export const jeanMichelSubset = {
   "email": "jean-michel@test.fr",
   "avatar": "https://pbs.twimg.com/profile_images/559360371593465857/TW4FQVeq.jpeg",
   "bio": "Grumpf.",
-  "location": null,
+  "location": "",
   "technologies": ["cpp"],
   "games": ["test"],
   "watched_games": ["awesome-game"],
   "following": ["YoruNoHikage"],
   "followers": []
 };
+
+const { awesomeGameSubset, testSubset } = require('./games');
 
 const users = [{
   ...yoruNoHikageSubset,

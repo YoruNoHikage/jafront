@@ -5,15 +5,13 @@ import { loadGames } from '../actions/game';
 
 import GameList from "../components/GameList.js";
 
-function mapStateToProps(state) {
-  let games = []; // TODO: change this
-  for(var i in state.entities.games) {
-    games.push(state.entities.games[i]);
-  }
+const gamesSelector = (state) => Object.values(state.entities.games);
+const isLoadingSelector = (state) => !!state.games.games.loadingList;
 
+function mapStateToProps(state) {
   return {
-    games,
-    isLoading: !!state.games.games.loadingList,
+    games: gamesSelector(state),
+    isLoading: isLoadingSelector(state),
   };
 }
 

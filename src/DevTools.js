@@ -4,7 +4,7 @@ import { createDevTools } from 'redux-devtools';
 import LogMonitor from 'redux-devtools-log-monitor';
 import DockMonitor from 'redux-devtools-dock-monitor';
 import Dispatcher from 'redux-devtools-dispatch';
-import MultipleMonitors from 'redux-devtools-dispatch/lib/MultipleMonitors';
+import MultipleMonitors from 'redux-devtools-multiple-monitors';
 
 import * as acGame from './actions/game';
 import * as acAuth from './actions/auth';
