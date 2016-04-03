@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 
 import { requestUser as loadUser } from '../actions/user';
 
+import { denormalize } from 'denormalizr';
+import { Schemas } from '../middlewares/api';
+
 import responsiveImgStyles from '../../css/responsive-img.css';
 
 import { Link } from 'react-router';
@@ -13,27 +16,23 @@ import Button from '../components/Button';
 import EditableTags from '../components/EditableTags';
 import Cover from '../components/Cover';
 
+const userSelector = (state, username) => {
+  const user = state.entities.users[username];
+  if(!user) { return null; }
+  return denormalize(user, state.entities, Schemas.USER);
+};
+
 function mapStateToProps(state, ownProps) {
   const { auth, entities } = state;
   const { username } = ownProps.params;
   const { games, technologies, users } = entities;
   const currentUser = users[auth.user] || {};
-
-  // getting user if it exists in entities
-  let user = users[username] || {};
-  if(user) {
-    user = {
-      ...user,
-      technologies: user.technologies ? user.technologies.map(name => technologies[name]) : [],
-      games: user.games ? user.games.map(name => games[name]) : [],
-      watchedGames: user.watchedGames ? user.watchedGames.map(name => games[name]) : [],
-    };
-  }
+  const user = userSelector(state, username);
 
   return {
     username,
     user,
-    isCurrentUser: user.username === currentUser.username,
+    isCurrentUser: (user && user.username) === currentUser.username,
     // followedByUser: user.followers.indexOf(currentUser.username) > -1,
     // followingUser: user.following.indexOf(currentUser.username) > -1,
   };

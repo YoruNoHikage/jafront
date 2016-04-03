@@ -18,22 +18,22 @@ const technologySchema = new Schema('technologies', {
 
 userSchema.define({
   technologies: arrayOf(technologySchema),
-  games: arrayOf(gameSchema),
-  watchedGames: arrayOf(gameSchema),
+  games: arrayOf(gameSchema).mappedBy('owner'),
+  watchedGames: arrayOf(gameSchema).mappedBy('watchers'),
 
-  followers: arrayOf(userSchema),
-  following: arrayOf(userSchema),
+  followers: arrayOf(userSchema).mappedBy('following'),
+  following: arrayOf(userSchema).mappedBy('followers'),
 });
 
 gameSchema.define({
-  owner: userSchema,
-  watchers: arrayOf(userSchema),
+  owner: userSchema.mappedBy('games'),
+  watchers: arrayOf(userSchema).mappedBy('watchedGames'),
 
-  technologies: arrayOf(technologySchema),
+  technologies: arrayOf(technologySchema).mappedBy('games'),
 });
 
 technologySchema.define({
-  games: arrayOf(gameSchema),
+  games: arrayOf(gameSchema).mappedBy('technologies'),
 });
 
 export const Schemas = {

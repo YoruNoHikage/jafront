@@ -4,7 +4,7 @@ import history from '../history';
 import cx from 'classnames';
 
 import { denormalize } from 'denormalizr';
-import { Schema, arrayOf } from 'normalizr';
+import { Schemas } from '../middlewares/api';
 
 import { loadGame, editGame, favoriteGame } from '../actions/game';
 
@@ -26,15 +26,7 @@ import objFilter from '../utils/obj-filter.js';
 const gameSelector = (state, slug) => {
   const game = state.entities.games[slug];
   if(!game) { return null; }
-  // TMP
-  const gamesSchema = new Schema('games');
-  gamesSchema.define({
-    owner: new Schema('users'),
-    watchers: arrayOf(new Schema('users')),
-    technologies: arrayOf(new Schema('technologies')),
-  });
-  // TMP
-  return denormalize(state.entities.games[slug], state.entities, gamesSchema);
+  return denormalize(game, state.entities, Schemas.GAME);
 };
 const isAuthorSelector = (game, user) => game && user ? game.owner.username === user.username : false;
 const favoritedByUserSelector = (game, user) => game && user ? game.watchers.includes(user.username) : false;
