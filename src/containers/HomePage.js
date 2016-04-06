@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { denormalize } from 'denormalizr';
+import { Schemas } from '../middlewares/api';
+
 import { Link } from 'react-router';
 import ButtonLink from '../components/ButtonLink';
 import Button from '../components/Button';
 import Well from '../components/Well';
+import Thumbnail from '../components/Thumbnail';
 
 // Feed
 import Timeline from "../components/Timeline";
@@ -14,12 +18,9 @@ import ButtonGroup from '../components/ButtonGroup';
 import { loadGames } from '../actions/game';
 
 // Duplicate from GamesPages, TODO: change this
-function mapStateToProps(state) {
-  let games = []; // TODO: change this
-  for(var i in state.entities.games) {
-    games.push(state.entities.games[i]);
-  }
+const gamesSelector = (state) => Object.values(state.entities.games).map(game => denormalize(game, state.entities, Schemas.GAME));
 
+function mapStateToProps(state) {
   let auth = { isAuthenticated: !!state.auth.user };
   if(state.auth.user) {
     auth['user'] = state.entities.users[auth.user];
@@ -27,7 +28,7 @@ function mapStateToProps(state) {
 
   return {
     ...auth,
-    games,
+    games: gamesSelector(state),
     isLoading: !!state.games.games.loadingList,
   };
 }
@@ -47,12 +48,10 @@ export default class HomePage extends Component {
 
   componentDidMount() {
     fetch('https://api.github.com/repos/JeuxAmateurs/website/contributors')
-      .then((response) => {
-        return response.json();
-      })
-      .then((json) => {
+      .then(response => response.json())
+      .then(json => {
         this.setState({
-          contributors: json,
+          contributors: Array.isArray(json) ? json : [],
         });
       });
   }
@@ -112,21 +111,19 @@ export default class HomePage extends Component {
     if(!this.props.isLoading) {
       lastGames = this.props.games.map((game) => {
         return (
-          <div key={game.slug} style={thumbnailStyles}>
-            <Link to={`/games/${game.slug}`}>
-              <img style={{display: 'block'}} src={game.logo}/>
-            </Link>
-          </div>
+          <Thumbnail image={game.logo} key={game.slug} link={`/games/${game.slug}`}>
+            <h3 style={{fontVariant: 'small-caps', textTransform: 'capitalize', fontWeight: '600', padding: '10px'}}>
+              <Link style={{color: 'white'}} to={`/games/${game.slug}`}>{game.name}</Link>
+            </h3>
+          </Thumbnail>
         );
       });
     }
-    const contributors = this.state.contributors.map((e, index) => {
-      return (
-        <a key={'contributors-' + index} href={e.html_url}>
-          <img src={e.avatar_url + '&s=24'} />
-        </a>
-      );
-    });
+    const contributors = this.state.contributors.map((e, index) => (
+      <a key={'contributors-' + index} href={e.html_url}>
+        <img src={e.avatar_url + '&s=24'} />
+      </a>
+    ));
     return (
       <div>
         <div className="title">

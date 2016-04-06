@@ -1,0 +1,33 @@
+.default {
+  display: inline-block;
+  margin: 0 10px 10px 0;
+  overflow: hidden;
+  position: relative;
+  width: 200px;
+}
+
+.image {
+  display: block;
+  object-fit: cover;
+  transition: transform 300ms;
+}
+
+.default:hover .image {
+  transform: scale(1.2);
+}
+
+.default:hover .children {
+  opacity: 1;
+}
+
+.children {
+  composes: default from "./overlay.css";
+  background-color: rgba(0, 143, 255, .5);
+  transition: opacity 300ms;
+  opacity: 0;
+  pointer-events: none;
+  line-height: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
